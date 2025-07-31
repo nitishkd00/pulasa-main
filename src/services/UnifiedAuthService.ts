@@ -38,7 +38,7 @@ class UnifiedAuthService {
   private sessionKey: string;
 
   constructor() {
-    this.baseURL = import.meta.env.VITE_UNIFIED_AUTH_URL || 'http://localhost:6001';
+    this.baseURL = 'https://pulasa-auth-service.onrender.com';
     this.sessionKey = 'pulasa_unified_session';
     
     // Configure axios defaults

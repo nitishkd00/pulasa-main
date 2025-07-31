@@ -6,7 +6,7 @@ export const MONGODB_CONFIG = {
 };
 
 export const API_CONFIG = {
-  baseUrl: import.meta.env.VITE_API_BASE_URL || 'http://localhost:6001',
+  baseUrl: 'https://pulasa-auth-service.onrender.com',
   authService: {
     login: '/api/auth/login',
     register: '/api/auth/register',
