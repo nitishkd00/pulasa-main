@@ -59,7 +59,7 @@ export const AuctionProvider: React.FC<AuctionProviderProps> = ({ children }) =>
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const auctionApiUrl = import.meta.env.VITE_AUCTION_API_URL || 'http://localhost:5001';
+  const auctionApiUrl = 'https://pulasa-auction-server.onrender.com';
 
   const fetchAuctions = async () => {
     setLoading(true);
