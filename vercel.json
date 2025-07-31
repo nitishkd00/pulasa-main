@@ -8,11 +8,6 @@
       "destination": "/index.html"
     }
   ],
-  "env": {
-    "VITE_UNIFIED_AUTH_URL": "@vite_unified_auth_url",
-    "VITE_API_BASE_URL": "@vite_api_base_url",
-    "VITE_AUCTION_API_URL": "@vite_auction_api_url"
-  },
   "functions": {
     "dist/**/*.js": {
       "maxDuration": 30
