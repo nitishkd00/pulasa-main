@@ -92,6 +92,9 @@ const NavigationHeader = () => {
   const handleAuctionNavigation = async () => {
     console.log('🎯 PULASA NAVIGATION: Auction navigation clicked');
 
+    // Show loading indicator immediately
+    const loadingToast = toast.loading('Opening auction app...');
+
     if (user) {
       console.log(`👤 PULASA NAVIGATION: User logged in: ${user.email}`);
 
@@ -102,13 +105,8 @@ const NavigationHeader = () => {
         if (!authToken) {
           console.log('🔐 PULASA NAVIGATION: No unified auth token found, attempting to authenticate...');
 
-          // Show loading indicator
-          const loadingToast = toast.loading('Authenticating for auction access...');
-
           // Try to authenticate with unified auth
           const loginResult = await unifiedAuthService.login(user.email, 'pulasa2025'); // Default password for migrated users
-
-          toast.dismiss(loadingToast);
 
           if (loginResult && loginResult.success) {
             authToken = unifiedAuthService.getCurrentToken();
@@ -117,21 +115,19 @@ const NavigationHeader = () => {
 
             if (!authToken) {
               console.error('❌ PULASA NAVIGATION: Token not available after successful login');
+              toast.dismiss(loadingToast);
               toast.error('Authentication failed - please try again');
               return;
             }
-
-            toast.success('Authentication successful! Opening auction app...');
           } else {
             console.error('❌ PULASA NAVIGATION: Unified auth login failed:', loginResult?.error);
-            toast.error('Authentication failed - opening auction app for manual login');
             console.log('🔄 PULASA NAVIGATION: Redirecting to auction app for manual login...');
+            toast.dismiss(loadingToast);
             window.location.href = 'https://pulasa-auction-client.vercel.app';
             return;
           }
         } else {
           console.log('✅ PULASA NAVIGATION: Using existing auth token');
-          toast.success('Opening auction app with existing authentication...');
         }
 
         if (authToken) {
@@ -141,6 +137,7 @@ const NavigationHeader = () => {
             const validation = await unifiedAuthService.validateToken(authToken);
             if (!validation.success || !validation.valid) {
               console.error('❌ PULASA NAVIGATION: Token validation failed');
+              toast.dismiss(loadingToast);
               toast.error('Authentication token invalid - please try again');
               unifiedAuthService.clearSession();
               return;
@@ -148,6 +145,7 @@ const NavigationHeader = () => {
             console.log('✅ PULASA NAVIGATION: Token validation successful');
           } catch (validationError) {
             console.error('❌ PULASA NAVIGATION: Token validation error:', validationError);
+            toast.dismiss(loadingToast);
             toast.error('Authentication validation failed - please try again');
             return;
           }
@@ -164,18 +162,18 @@ const NavigationHeader = () => {
 
         } else {
           console.log('⚠️ PULASA NAVIGATION: No token available - opening auction app without authentication');
-          toast.warning('Opening auction app - please login manually');
+          toast.dismiss(loadingToast);
           window.location.href = 'https://pulasa-auction-client.vercel.app';
         }
       } catch (error) {
         console.error('❌ PULASA NAVIGATION: Failed to get unified auth token:', error);
-        toast.error('Authentication error - opening auction app for manual login');
         console.log('🔄 PULASA NAVIGATION: Falling back to opening auction app without authentication');
+        toast.dismiss(loadingToast);
         window.location.href = 'https://pulasa-auction-client.vercel.app';
       }
     } else {
       console.log('👤 PULASA NAVIGATION: No user logged in - opening auction app');
-      toast.info('Please login to access auctions');
+      toast.dismiss(loadingToast);
       window.location.href = 'https://pulasa-auction-client.vercel.app';
     }
   };
