@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
 import unifiedAuthService from "@/services/UnifiedAuthService";
-import MongoDBService from "@/services/MongoDBService";
 
 interface Product {
   id: string;
@@ -30,9 +29,28 @@ const ProductShowcase = () => {
         const currentUser = await unifiedAuthService.getCurrentUser();
         setUser(currentUser);
 
-        // Fetch products from database
-        const products = await MongoDBService.getProducts();
-        setProducts(products);
+        // Using mock data since no products API exists
+        const mockProducts: Product[] = [
+          {
+            id: "1",
+            name: "Fresh Pulasa Fish",
+            description: "Premium quality Pulasa fish caught fresh from the Godavari river",
+            price: 25000,
+            image: "/assets/Premium Wild Pulasa.png",
+            stock: 50,
+            category: "Fresh Fish"
+          },
+          {
+            id: "2",
+            name: "Pulasa Curry",
+            description: "Traditional Pulasa fish curry prepared with authentic spices",
+            price: 25800,
+            image: "/assets/Pulasa Curry.png",
+            stock: 30,
+            category: "Curry"
+          }
+        ];
+        setProducts(mockProducts);
       } catch (error) {
         console.error('Failed to fetch data:', error);
         toast.error("Failed to load products");
