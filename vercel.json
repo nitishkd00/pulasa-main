@@ -13,7 +13,7 @@
     },
     {
       "source": "/auction-api/:path*",
-      "destination": "https://pulasa-auction-server.onrender.com/api/:path*"
+      "destination": "https://pulasa-auction-server.onrender.com/:path*"
     },
     {
       "source": "/(.*)",
