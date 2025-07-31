@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: pulasa-ecommerce
+    env: static
+    buildCommand: npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_UNIFIED_AUTH_URL
+        value: https://api.pulasa.com
+      - key: VITE_API_BASE_URL
+        value: https://api.pulasa.com
+    autoDeploy: true 
