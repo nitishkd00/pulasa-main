@@ -59,7 +59,7 @@ export const AuctionProvider: React.FC<AuctionProviderProps> = ({ children }) =>
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const auctionApiUrl = '/auction-api';
+  const auctionApiUrl = 'https://pulasa-auction-server.onrender.com/api';
 
   const fetchAuctions = async () => {
     setLoading(true);
