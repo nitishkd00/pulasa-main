@@ -45,7 +45,7 @@ const ProductShowcase = () => {
             id: "2",
             name: "Pulasa Curry",
             description: "Traditional Pulasa fish curry prepared with authentic spices",
-            price: 800,
+            price: 25800,
             image: "/assets/Pulasa Curry.png",
             stock: 30,
             category: "Curry"
@@ -132,7 +132,7 @@ const ProductShowcase = () => {
                 <div className="flex justify-between items-center">
                   <div>
                     <p className="text-2xl font-bold text-green-600">
-                      ₹{product.price.toFixed(2)}
+                      ₹{product.price.toFixed(2)} per kg
                     </p>
                     <p className="text-sm text-gray-500">
                       Stock: {product.stock} available
