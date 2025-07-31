@@ -126,7 +126,7 @@ const NavigationHeader = () => {
             console.error('❌ PULASA NAVIGATION: Unified auth login failed:', loginResult?.error);
             toast.error('Authentication failed - opening auction app for manual login');
             console.log('🔄 PULASA NAVIGATION: Redirecting to auction app for manual login...');
-            window.open('https://pulasa-auction-client.vercel.app', '_blank', 'noopener,noreferrer');
+            window.location.href = 'https://pulasa-auction-client.vercel.app';
             return;
           }
         } else {
@@ -158,27 +158,25 @@ const NavigationHeader = () => {
           console.log(`👤 PULASA NAVIGATION: User: ${user.email}`);
           console.log(`🎫 PULASA NAVIGATION: Token length: ${authToken.length}`);
 
-          // Open in new tab with a slight delay to ensure everything is ready
-          setTimeout(() => {
-            window.open(auctionUrl, '_blank', 'noopener,noreferrer');
-            console.log('✅ PULASA NAVIGATION: Auction app opened successfully');
-          }, 500);
+          // Navigate directly to auction app (mobile-friendly)
+          window.location.href = auctionUrl;
+          console.log('✅ PULASA NAVIGATION: Auction app navigation initiated');
 
         } else {
           console.log('⚠️ PULASA NAVIGATION: No token available - opening auction app without authentication');
           toast.warning('Opening auction app - please login manually');
-          window.open('https://pulasa-auction-client.vercel.app', '_blank', 'noopener,noreferrer');
+          window.location.href = 'https://pulasa-auction-client.vercel.app';
         }
       } catch (error) {
         console.error('❌ PULASA NAVIGATION: Failed to get unified auth token:', error);
         toast.error('Authentication error - opening auction app for manual login');
         console.log('🔄 PULASA NAVIGATION: Falling back to opening auction app without authentication');
-        window.open('https://pulasa-auction-client.vercel.app', '_blank', 'noopener,noreferrer');
+        window.location.href = 'https://pulasa-auction-client.vercel.app';
       }
     } else {
       console.log('👤 PULASA NAVIGATION: No user logged in - opening auction app');
       toast.info('Please login to access auctions');
-      window.open('https://pulasa-auction-client.vercel.app', '_blank', 'noopener,noreferrer');
+      window.location.href = 'https://pulasa-auction-client.vercel.app';
     }
   };
 
