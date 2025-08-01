@@ -68,7 +68,7 @@ const StorySection = () => {
           >
             <div className="flex flex-col md:flex-row">
               <img
-                src="https://res.cloudinary.com/ddw4avyim/image/upload/v1751276629/snowscat-7e2QqKKOYak-unsplash_aewqwb.jpg"
+                src="/assets/WhatsApp Image 2025-08-01 at 3.27.15 PM"
                 alt="Pulasa – The Queen of Indian Fish"
                 className="w-full md:w-64 h-56 object-cover rounded-t-lg md:rounded-l-lg md:rounded-t-none transition-transform duration-500 group-hover:scale-105"
               />
