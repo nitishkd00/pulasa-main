@@ -65,7 +65,7 @@ export const AuctionProvider: React.FC<AuctionProviderProps> = ({ children }) =>
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get(`${auctionApiUrl}/auctions`);
+              const response = await axios.get(`${auctionApiUrl}/auction`);
       if (response.data.success) {
         setAuctions(response.data.auctions);
       } else {
@@ -83,7 +83,7 @@ export const AuctionProvider: React.FC<AuctionProviderProps> = ({ children }) =>
     try {
       const token = localStorage.getItem('pulasa_unified_session');
       const response = await axios.post(
-        `${auctionApiUrl}/auctions`,
+        `${auctionApiUrl}/auction`,
         auctionData,
         {
           headers: {
