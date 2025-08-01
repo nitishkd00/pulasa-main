@@ -339,7 +339,7 @@ const AdminDashboard = () => {
 
   const formatProducts = (products: string | Array<{ product_id: string; name: string; price: number; quantity: number }>) => {
     const parsedProducts = parseProducts(products);
-    return parsedProducts.map(product => `${product.name} x ${product.quantity}`).join(', ');
+    return parsedProducts.map(product => `${product.name} per kg x ${product.quantity}`).join(', ');
   };
 
   const getNextStatusOptions = (currentStatus: string) => {
@@ -621,7 +621,7 @@ const AdminDashboard = () => {
                   {parseProducts(selectedOrder.products)?.map((product, index) => (
                     <div key={index} className="flex justify-between items-center p-3 bg-[hsl(var(--muted))] rounded-lg">
                       <div>
-                        <p className="font-medium text-[hsl(var(--card-foreground))]">{product.name}</p>
+                        <p className="font-medium text-[hsl(var(--card-foreground))]">{product.name} per kg</p>
                         <p className="text-sm text-[hsl(var(--muted-foreground))]">Quantity: {product.quantity}</p>
                       </div>
                       <div className="text-right">

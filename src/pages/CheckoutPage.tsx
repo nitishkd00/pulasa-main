@@ -253,7 +253,7 @@ const CheckoutPage = () => {
                   {cartItems.map((item) => (
                     <div key={item.id} className="flex justify-between items-center">
                       <div>
-                        <h3 className="font-semibold text-[hsl(var(--primary))]">{item.name}</h3>
+                        <h3 className="font-semibold text-[hsl(var(--primary))]">{item.name} per kg</h3>
                         <p className="text-sm text-[hsl(var(--muted-foreground))]">Quantity: {item.quantity}</p>
                       </div>
                       <p className="font-semibold text-[hsl(var(--primary))]">₹{(parsePrice(item.price) * item.quantity).toFixed(2)}</p>
@@ -283,8 +283,65 @@ const CheckoutPage = () => {
                     className="w-48 h-48 object-contain border-2 border-[hsl(var(--border))] rounded-lg"
                   />
                   <div className="text-sm text-[hsl(var(--muted-foreground))]">
-                    <p>UPI ID: pulasa@pay</p>
-                    <p>Amount: ₹{calculateTotal().toFixed(2)}</p>
+                    <p>UPI ID: malakalav@ybl</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Payment Process Information */}
+            <Card className="border-2 border-[hsl(var(--border))] bg-white shadow-md mt-6">
+              <CardHeader>
+                <CardTitle className="text-[hsl(var(--primary))] text-xl font-bold">🐟 Payment & Order Process</CardTitle>
+                <CardDescription className="text-[hsl(var(--muted-foreground))]">
+                  Pay ₹500 now to confirm your order.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4 text-[hsl(var(--muted-foreground))]">
+                  <p className="text-sm">
+                    This is a token advance, and here's how the process works:
+                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-start space-x-3">
+                      <span className="bg-[hsl(var(--primary))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">1</span>
+                      <div>
+                        <p className="font-medium text-[hsl(var(--primary))]">Order Review</p>
+                        <p className="text-sm">Once payment is done, our admin team will review and approve your order.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <span className="bg-[hsl(var(--primary))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">2</span>
+                      <div>
+                        <p className="font-medium text-[hsl(var(--primary))]">Catch & Update</p>
+                        <p className="text-sm">After the fish is caught, we'll update you with:</p>
+                        <ul className="list-disc list-inside ml-4 mt-1 text-sm">
+                          <li>The weight of the fish</li>
+                          <li>The final price</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <span className="bg-[hsl(var(--primary))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">3</span>
+                      <div>
+                        <p className="font-medium text-[hsl(var(--primary))]">Final Payment</p>
+                        <p className="text-sm">You'll then pay the remaining balance before delivery.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <span className="bg-[hsl(var(--accent))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">4</span>
+                      <div>
+                        <p className="font-medium text-[hsl(var(--accent))]">Refund Policy</p>
+                        <p className="text-sm">If we are unable to:</p>
+                        <ul className="list-disc list-inside ml-4 mt-1 text-sm">
+                          <li>Catch the fish</li>
+                          <li>Or unable to deliver your order</li>
+                        </ul>
+                        <p className="text-sm mt-2 font-medium text-[hsl(var(--accent))]">
+                          Your ₹500 will be fully refunded — no worries!
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </CardContent>

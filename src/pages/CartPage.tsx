@@ -46,7 +46,7 @@ const CartPage = () => {
                   />
                   <div className="flex-grow">
                     <h2 className="text-lg font-semibold text-[hsl(var(--primary))]">
-                      {item.name}
+                      {item.name} per kg
                     </h2>
                     <p className="text-[hsl(var(--muted-foreground))]">
                       {item.price}

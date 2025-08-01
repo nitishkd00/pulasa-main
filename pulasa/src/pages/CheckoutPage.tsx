@@ -283,7 +283,7 @@ const CheckoutPage = () => {
                     className="w-48 h-48 object-contain border-2 border-[hsl(var(--border))] rounded-lg"
                   />
                   <div className="text-sm text-[hsl(var(--muted-foreground))]">
-                    <p>UPI ID: malakala@ybl</p>
+                    <p>UPI ID: malakalav@ybl</p>
                   </div>
                 </div>
               </CardContent>

@@ -252,7 +252,7 @@ const Orders = () => {
                           {Array.isArray(products) ? products.map((product, index) => (
                             <div key={index} className="flex justify-between items-center py-2 border-b border-gray-100">
                               <div>
-                                <p className="font-medium">{product.name}</p>
+                                <p className="font-medium">{product.name} per kg</p>
                                 <p className="text-sm text-[hsl(var(--muted-foreground))]">
                                   Quantity: {product.quantity}
                                 </p>
