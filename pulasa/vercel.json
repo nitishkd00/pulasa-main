@@ -4,16 +4,16 @@
   "framework": "vite",
   "rewrites": [
     {
-      "source": "/auction/:path*",
-      "destination": "https://pulasa-auction-client.vercel.app/auction/:path*"
-    },
-    {
-      "source": "/api/:path*",
-      "destination": "https://pulasa-auth-service.onrender.com/api/:path*"
-    },
-    {
-      "source": "/auction-api/:path*",
-      "destination": "https://pulasa-auction-server.onrender.com/api/:path*"
+                    "source": "/auction/:path*",
+              "destination": "https://auction.pulasa.com/auction/:path*"
+            },
+            {
+              "source": "/api/:path*",
+              "destination": "https://api.pulasa.com/api/:path*"
+            },
+            {
+              "source": "/auction-api/:path*",
+              "destination": "https://auction-api.pulasa.com/api/:path*"
     },
     {
       "source": "/(.*)",

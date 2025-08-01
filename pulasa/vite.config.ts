@@ -9,12 +9,12 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     proxy: {
       '/api': {
-        target: 'https://pulasa-auth-service.onrender.com',
+        target: process.env.VITE_UNIFIED_AUTH_URL || 'http://localhost:6001',
         changeOrigin: true,
         secure: true,
       },
       '/auction-api': {
-        target: 'https://pulasa-auction-server.onrender.com',
+        target: process.env.VITE_AUCTION_API_URL || 'http://localhost:5001',
         changeOrigin: true,
         secure: true,
       }

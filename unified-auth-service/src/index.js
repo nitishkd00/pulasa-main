@@ -42,7 +42,7 @@ app.use(helmet({
 // CORS configuration
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',')
-  : ['http://localhost:8080', 'http://localhost:3001', 'http://localhost:3000', 'http://localhost:8888'];
+  : ['http://localhost:8080', 'http://localhost:3001', 'http://localhost:3000', 'http://localhost:8888', 'https://pulasa.com', 'https://auction.pulasa.com'];
 
 app.use(cors({
   origin: function (origin, callback) {
