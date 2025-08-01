@@ -1,0 +1,23 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/auction/:path*",
+      "destination": "https://pulasa-auction-client.vercel.app/auction/:path*"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "https://pulasa-auth-service.onrender.com/api/:path*"
+    },
+    {
+      "source": "/auction-api/:path*",
+      "destination": "https://pulasa-auction-server.onrender.com/api/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+} 

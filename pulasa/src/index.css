@@ -1,0 +1,187 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
+
+@layer base {
+  :root {
+    --background: 0 0% 98%; /* Light gray background */
+    --foreground: 0 0% 9%; /* Dark text */
+
+    --card: 0 0% 100%; /* White cards */
+    --card-foreground: 0 0% 9%; /* Dark text on white cards */
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 9%;
+
+    --primary: 24 85% 35%; /* #B1420A equivalent in HSL - Pulasa orange */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 96%; /* Light gray for secondary elements */
+    --secondary-foreground: 0 0% 9%;
+
+    --muted: 0 0% 96%; /* Light gray */
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 34 100% 59%; /* Green accent for positive actions */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%; /* Red for negative actions */
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 90%; /* Light border */
+    --input: 0 0% 96%; /* Light input background */
+    --ring: 24 85% 35%;
+
+    --radius: 0.75rem; /* 12px as required */
+
+    --sidebar-background: 36 60% 97%;
+    --sidebar-foreground: 24 80% 15%;
+    --sidebar-primary: 24 90% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 24 80% 45%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 24 30% 85%;
+    --sidebar-ring: 24 90% 55%;
+  }
+
+  .dark {
+    --background: 0 0% 9%; /* Dark background */
+    --foreground: 0 0% 98%; /* Light text */
+
+    --card: 0 0% 15%; /* Dark cards */
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 15%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 24 90% 55%; /* Brighter orange for dark mode */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 15%; /* Dark secondary */
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+
+    --accent: 24 80% 45%; /* Adjusted accent for dark mode */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 70% 40%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 20%; /* Dark border */
+    --input: 0 0% 15%; /* Dark input background */
+    --ring: 24 90% 55%;
+    --sidebar-background: 0 0% 9%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 24 90% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 24 80% 45%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 24 90% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Poppins", "Inter", system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Custom MeePulasa Design System */
+@layer components {
+  .glass-card {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+
+  .ripple-effect {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ripple-effect::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .ripple-effect:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .gradient-text {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary)),
+      hsl(var(--accent))
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* Smooth scrolling */
+html,
+body {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary));
+}
+
+/* Video and image optimizations */
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+img[loading="lazy"] {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+img[loading="lazy"].loaded {
+  opacity: 1;
+}
+
+.parallax {
+  transform: translateZ(0);
+  will-change: transform;
+}
