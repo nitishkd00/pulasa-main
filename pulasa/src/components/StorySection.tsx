@@ -77,7 +77,7 @@ const StorySection = () => {
                   Pulasa – The Queen of Indian Fish
                 </h3>
                 <p className="text-[hsl(var(--muted-foreground))] text-base mb-2">
-                  In Andhra, the river bound adult Hilsa is known as Pulasa...
+                  In Andhra, the river-bound adult Hilsa is known as Pulasa...
                 </p>
                 <div className="flex items-center space-x-2 mt-2">
                   <span className="text-[hsl(var(--accent))] font-semibold text-sm">
@@ -90,75 +90,28 @@ const StorySection = () => {
               <div className="p-8 bg-[hsl(var(--secondary))/0.5] rounded-b-xl shadow-inner border-t border-[hsl(var(--border))] mt-0 animate-fade-in">
                 <div className="text-[hsl(var(--muted-foreground))] text-lg leading-relaxed">
                   <p className="mb-4">
-                    In Andhra, the river bound adult Hilsa is known as Pulasa.
-                    If you believe the connoisseurs, it's the Godavari's mud
-                    that makes Pulasa distinctive and better than all other
-                    variants. Young Hilsa or the adults caught in the sea are
-                    not Pulasa. It's the adults that have thrashed their way up
-                    the murky waters of the Godavari delta that are prized.
-                    Godavari Pulasa regularly sells for as much as Rs. 5000 per
-                    kg, and large catches can be auctioned for several times
-                    more.
+                    In Andhra, the river-bound adult Hilsa is known as Pulasa. If you believe the connoisseurs, it's the Godavari's mud that makes Pulasa distinctive and better than all other variants. Young Hilsa or the adults caught in the sea are not Pulasa. It's the adults that have thrashed their way up the murky waters of the Godavari delta that are prized. Godavari Pulasa regularly sells for as much as Rs. 25,000 per kg, and large catches can be auctioned for several times more.
                   </p>
                   <p className="mb-2 font-semibold">
-                    Pulasa Pulusu at Aaha Food Village
+                    Pulasa Pulusu at Pulasa.com
                   </p>
                   <ul className="list-disc ml-6 mb-4">
                     <li>Pulasa Pulusu with Steam Rice</li>
                   </ul>
                   <p className="mb-4">
-                    I've only come across one recipe for Pulasa, and that's a
-                    Pulasa Pulusu. While Bengali Ilish recipes are easily
-                    spotted in restaurants, you'd rarely see Pulasa being served
-                    commercially. My first Pulasa was at a food promotion by
-                    Westin Hyderabad where traditional dishes from the villages
-                    of Andhra and Telangana were showcased. More recently, I was
-                    able to relish Pulasa Pulusu at Aaha Food Village
-                    (Kukatpally) during a specially organised meetup by The
-                    Great Hyderabad Food and Travel group.
+                    I've only come across one recipe for Pulasa, and that's Pulasa Pulusu. While Bengali Ilish recipes are easily spotted in restaurants, you'd rarely see Pulasa being served commercially. My first Pulasa was at a food promotion by Westin Hyderabad where traditional dishes from the villages of Andhra and Telangana were showcased. More recently, I was able to relish Pulasa Pulusu at Pulasa.com during a specially organised meetup by The Great Hyderabad Food and Travel group.
                   </p>
                   <p className="mb-4">
-                    Besides the steep price, the other reason why Pulasa Pulusu
-                    is rarely available in restaurants is the long prep. This
-                    Pulusu is cooked in earthen pots over wood fire. The cooking
-                    process lasts between two to four hours. Since Hilsa is a
-                    delicate fish, the temperature has to be carefully
-                    controlled. The Pulusu should only be allowed to simmer; too
-                    much heat and you'll kill the taste of the fish. The Pulasa
-                    Pulusu at Aaha Food Village had far fewer bones than I had
-                    anticipated. I had presumed that this might have been due to
-                    the way the fish was cut, but I later learned that due to
-                    the unusually long and slow cooking many of the smaller
-                    bones simply melt and you're left with only the big bones
-                    that are relatively easy to tackle.
+                    Besides the steep price, the other reason why Pulasa Pulusu is rarely available in restaurants is the long prep. This Pulusu is cooked in earthen pots over wood fire. The cooking process lasts between two to four hours. Since Hilsa is a delicate fish, the temperature has to be carefully controlled. The Pulusu should only be allowed to simmer; too much heat and you'll kill the taste of the fish. The Pulasa Pulusu at Pulasa.com had far fewer bones than I had anticipated. I had presumed that this might have been due to the way the fish was cut, but I later learned that due to the unusually long and slow cooking, many of the smaller bones simply melt, and you're left with only the big bones that are relatively easy to tackle.
                   </p>
                   <p className="mb-4">
-                    Pulasa Pulusu is a robust gravy that's spicy and tangy.
-                    Typically cooked with okra, the main flavouring ingredients
-                    are onion, garlic, tamarind paste, curry leaves, chili
-                    powder and chilly. Most also add oil from homemade mango
-                    pickle prepared during the summer.
+                    Pulasa Pulusu is a robust gravy that's spicy and tangy. Typically cooked with okra, the main flavouring ingredients are onion, garlic, tamarind paste, curry leaves, chili powder and chilly. Most also add oil from homemade mango pickle prepared during the summer.
                   </p>
                   <p className="mb-4">
-                    Whenever someone hears about Pulasa two questions that
-                    follow 'Is it worth the price?' and 'Is it worth the hype?'
-                    The astronomical prices commanded by Pulasa are difficult to
-                    justify. Hilsa from Bengal or Bangladesh usually retail for
-                    around Rs. 1000 to Rs. 1800 per kg. I am not an impartial
-                    commentator, but I've found the Hilsa from Godavari to lack
-                    the intense aroma and flavour you'd find in the ones from
-                    Bengal or Bangladesh. The insane prices are a reflection of
-                    the shortfall in supply vs demand for Godavari Hilsa. You
-                    aren't necessarily getting something that's better.
-                    Socio-economic factors also have a role to play in this. The
-                    well to do families take pride in acquiring the best Pulasas
-                    in auctions and even gifting them. Pulasa is an aspirational
-                    product for many and this undoubtedly adds to the demand.
-                    However, one thing that I don't doubt is that Hilsa is the
-                    Queen of Indian Fish. And a well made Pulasa Pulusu is quite
-                    simply irresistible. Aaha Food Village can prepare Pulasa
-                    Pulusu for advance group bookings. There are also home chefs
-                    that serve this in Hyderabad.
+                    Whenever someone hears about Pulasa, two questions that follow: 'Is it worth the price?' and 'Is it worth the hype?' The astronomical prices commanded by Pulasa are difficult to justify. Hilsa from Bengal or Bangladesh usually retail for around Rs. 20,000 to Rs. 25,000 per kg. I am not an impartial commentator, but I've found the Hilsa from Godavari to lack the intense aroma and flavour you'd find in the ones from Bengal or Bangladesh. The insane prices are a reflection of the shortfall in supply vs demand for Godavari Hilsa. You aren't necessarily getting something that's better. Socio-economic factors also have a role to play in this. The well-to-do families take pride in acquiring the best Pulasas in auctions and even gifting them. Pulasa is an aspirational product for many and this undoubtedly adds to the demand.
+                  </p>
+                  <p className="mb-4">
+                    However, one thing that I don't doubt is that Hilsa is the Queen of Indian Fish. And a well-made Pulasa Pulusu is quite simply irresistible. Pulasa.com can prepare Pulasa Pulusu for advance group bookings. There are also home chefs that serve this in Hyderabad.
                   </p>
                 </div>
               </div>

@@ -456,7 +456,7 @@ const CheckoutPage = () => {
                   <div className="border-2 border-[hsl(var(--border))] rounded-lg p-4 bg-gray-50">
                     <div className="text-center">
                       <h3 className="text-lg font-semibold text-[hsl(var(--primary))] mb-3">UPI Payment</h3>
-                      <p className="text-sm text-[hsl(var(--muted-foreground))] mb-4">Scan QR code to pay ₹{calculateTotal().toFixed(2)}</p>
+                      <p className="text-sm text-red-600 font-medium mb-4">To confirm your order, kindly scan the QR code and complete the ₹500 payment</p>
                       <div className="flex flex-col items-center space-y-3">
                         <img
                           src="/assets/qrcode.png"
