@@ -68,7 +68,7 @@ class MongoDBService {
   private sessionKey: string;
 
   constructor() {
-    this.baseUrl = 'https://pulasa-auth-service.onrender.com';
+    this.baseUrl = 'https://api.pulasa.com';
     this.sessionKey = 'pulasa_unified_session';
   }
 

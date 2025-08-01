@@ -16,7 +16,7 @@ class NotificationService {
   private baseURL: string;
 
   constructor() {
-    this.baseURL = 'https://pulasa-auth-service.onrender.com';
+    this.baseURL = 'https://api.pulasa.com';
   }
 
   /**

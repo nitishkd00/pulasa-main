@@ -6,7 +6,7 @@ export const MONGODB_CONFIG = {
 };
 
 export const API_CONFIG = {
-  baseUrl: 'https://pulasa-auth-service.onrender.com',
+  baseUrl: 'https://api.pulasa.com',
   authService: {
     login: '/api/auth/login',
     register: '/api/auth/register',

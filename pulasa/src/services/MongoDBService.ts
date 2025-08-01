@@ -68,7 +68,7 @@ class MongoDBService {
   private sessionKey: string;
 
   constructor() {
-    this.baseUrl = 'https://pulasa-auth-service.onrender.com';
+    this.baseUrl = 'https://api.pulasa.com';
     this.sessionKey = 'pulasa_unified_session';
   }
 
@@ -250,7 +250,7 @@ class MongoDBService {
         return { success: false, error: 'Authentication required' };
       }
 
-      const response = await fetch(`https://pulasa-auth-service.onrender.com/api/orders`, {
+      const response = await fetch(`https://api.pulasa.com/api/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -280,8 +280,8 @@ class MongoDBService {
         return [];
       }
 
-      console.log('Fetching user orders from:', `https://pulasa-auth-service.onrender.com/api/orders/my-orders`);
-      const response = await fetch(`https://pulasa-auth-service.onrender.com/api/orders/my-orders`, {
+      console.log('Fetching user orders from:', `https://api.pulasa.com/api/orders/my-orders`);
+      const response = await fetch(`https://api.pulasa.com/api/orders/my-orders`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -306,8 +306,8 @@ class MongoDBService {
         return [];
       }
 
-      console.log('Fetching all orders from:', `https://pulasa-auth-service.onrender.com/api/orders`);
-      const response = await fetch(`https://pulasa-auth-service.onrender.com/api/orders`, {
+      console.log('Fetching all orders from:', `https://api.pulasa.com/api/orders`);
+      const response = await fetch(`https://api.pulasa.com/api/orders`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -329,7 +329,7 @@ class MongoDBService {
       const token = this.getCurrentToken();
       if (!token) return null;
 
-      const response = await fetch(`https://pulasa-auth-service.onrender.com/api/orders/${id}`, {
+      const response = await fetch(`https://api.pulasa.com/api/orders/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -352,7 +352,7 @@ class MongoDBService {
 
       console.log('🔧 Updating order status:', { orderId, status, token: token.substring(0, 20) + '...' });
 
-      const response = await fetch(`https://pulasa-auth-service.onrender.com/api/orders/${orderId}/status`, {
+      const response = await fetch(`https://api.pulasa.com/api/orders/${orderId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -38,7 +38,7 @@ class UnifiedAuthService {
   private sessionKey: string;
 
   constructor() {
-    this.baseURL = 'https://pulasa-auth-service.onrender.com';
+    this.baseURL = 'https://api.pulasa.com';
     this.sessionKey = 'pulasa_unified_session';
     
     // Configure axios defaults

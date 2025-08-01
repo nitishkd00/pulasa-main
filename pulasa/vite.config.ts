@@ -9,14 +9,15 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     proxy: {
       '/api': {
-        target: process.env.VITE_UNIFIED_AUTH_URL || 'http://localhost:6001',
+        target: process.env.VITE_UNIFIED_AUTH_URL || 'https://api.pulasa.com',
         changeOrigin: true,
         secure: true,
       },
       '/auction-api': {
-        target: process.env.VITE_AUCTION_API_URL || 'http://localhost:5001',
+        target: process.env.VITE_AUCTION_API_URL || 'https://auction-api.pulasa.com',
         changeOrigin: true,
         secure: true,
+        rewrite: (path) => path.replace(/^\/auction-api/, '/api')
       }
     }
   },
