@@ -269,27 +269,7 @@ const CheckoutPage = () => {
               </CardContent>
             </Card>
 
-            {/* UPI QR Code Section */}
-            <Card className="border-2 border-[hsl(var(--border))] bg-white shadow-md mt-6">
-              <CardHeader>
-                <CardTitle className="text-[hsl(var(--primary))] text-xl font-bold">UPI Payment</CardTitle>
-                <CardDescription className="text-[hsl(var(--muted-foreground))]">Scan QR code to pay ₹{calculateTotal().toFixed(2)}</CardDescription>
-              </CardHeader>
-              <CardContent className="text-center">
-                <div className="flex flex-col items-center space-y-4">
-                  <img
-                    src="/assets/qrcode.png"
-                    alt="UPI QR Code"
-                    className="w-48 h-48 object-contain border-2 border-[hsl(var(--border))] rounded-lg"
-                  />
-                  <div className="text-sm text-[hsl(var(--muted-foreground))]">
-                    <p>UPI ID: malakalav@ybl</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Payment Process Information */}
+            {/* Payment Process Information - MOVED UP */}
             <Card className="border-2 border-[hsl(var(--border))] bg-white shadow-md mt-6">
               <CardHeader>
                 <CardTitle className="text-[hsl(var(--primary))] text-xl font-bold">🐟 Payment & Order Process</CardTitle>
@@ -472,6 +452,24 @@ const CheckoutPage = () => {
                     </div>
                   </div>
                   
+                  {/* UPI QR Code Section - MOVED TO SHIPPING */}
+                  <div className="border-2 border-[hsl(var(--border))] rounded-lg p-4 bg-gray-50">
+                    <div className="text-center">
+                      <h3 className="text-lg font-semibold text-[hsl(var(--primary))] mb-3">UPI Payment</h3>
+                      <p className="text-sm text-[hsl(var(--muted-foreground))] mb-4">Scan QR code to pay ₹{calculateTotal().toFixed(2)}</p>
+                      <div className="flex flex-col items-center space-y-3">
+                        <img
+                          src="/assets/qrcode.png"
+                          alt="UPI QR Code"
+                          className="w-40 h-40 object-contain border-2 border-[hsl(var(--border))] rounded-lg"
+                        />
+                        <div className="text-sm text-[hsl(var(--muted-foreground))]">
+                          <p className="font-medium">UPI ID: <span className="text-[hsl(var(--primary))]">malakalav@ybl</span></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
                   <div>
                     <Label htmlFor="upiReference" className="text-[hsl(var(--primary))] font-medium">UPI Reference *</Label>
                     <Input
@@ -487,7 +485,7 @@ const CheckoutPage = () => {
                       <p className="text-red-500 text-sm mt-1">{errors.upiReference}</p>
                     )}
                     <p className="text-sm text-[hsl(var(--muted-foreground))] mt-1">
-                      Please scan the QR code and enter the transaction reference number
+                      Please scan the QR code above and enter the transaction reference number
                     </p>
                   </div>
                   
