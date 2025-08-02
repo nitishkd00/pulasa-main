@@ -83,7 +83,7 @@ const FooterSection = () => {
               </h4>
               <div className="space-y-3">
                 <a
-                  href="https://wa.me/+919876543210"
+                  href="https://wa.me/+919035151944"
                   className="flex items-center space-x-2 text-[hsl(var(--primary))] hover:text-[hsl(var(--accent))] transition-colors group"
                   target="_blank"
                   rel="noopener noreferrer"
