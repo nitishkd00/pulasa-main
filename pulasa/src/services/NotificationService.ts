@@ -147,14 +147,16 @@ class NotificationService {
   /**
    * Send order status update notification
    */
-  async sendOrderStatusUpdateNotification(userId: string, orderNumber: string, statusLabel: string, orderId: string): Promise<{ success: boolean; error?: string }> {
+  async sendOrderStatusUpdateNotification(userId: string, orderNumber: string, statusLabel: string, orderId: string, userEmail?: string, orderDetails?: any): Promise<{ success: boolean; error?: string }> {
     const notification = {
       userId,
       type: 'order_status_update' as const,
       title: `📦 Order Status Updated: ${statusLabel}`,
       message: `Your order #${orderNumber} status has been updated to "${statusLabel}". We'll keep you informed of any further updates. Thank you for your patience!`,
       orderId,
-      orderNumber
+      orderNumber,
+      userEmail,
+      orderDetails
     };
 
     return this.sendNotification(userId, notification);

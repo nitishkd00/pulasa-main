@@ -376,6 +376,26 @@ class MongoDBService {
       return { success: false, error: 'Network error' };
     }
   }
+
+  async getUserById(userId: string): Promise<User | null> {
+    try {
+      const token = this.getCurrentToken();
+      if (!token) {
+        console.log('No token found for getUserById');
+        return null;
+      }
+
+      const response = await fetch(`${this.baseUrl}/api/auth/user/${userId}`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+
+      const data = await response.json();
+      return data.success ? data.user : null;
+    } catch (error) {
+      console.error('Get user by ID error:', error);
+      return null;
+    }
+  }
 }
 
 export default new MongoDBService(); 

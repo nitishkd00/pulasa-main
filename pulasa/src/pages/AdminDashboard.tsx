@@ -203,13 +203,19 @@ const AdminDashboard = () => {
       // Refresh orders to get the latest data from database
       await fetchOrders();
 
+      // Get user details for email notification
+      const userDetails = await MongoDBService.getUserById(order.user_id);
+      const userEmail = userDetails?.email;
+
       // Send notification to the user
       const statusLabel = statusOptions.find(s => s.value === mappedStatus)?.label || getDisplayStatus(mappedStatus);
       const notificationResult = await NotificationService.sendOrderStatusUpdateNotification(
           order.user_id,
           order.order_number,
-        statusLabel,
-          order.id
+          statusLabel,
+          order.id,
+          userEmail,
+          order
         );
         
         if (notificationResult.success) {
