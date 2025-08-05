@@ -76,16 +76,22 @@ class NotificationService {
         console.error('📧 Notification test route failed:', error);
       }
 
+      const requestBody = {
+        userId,
+        ...notification
+      };
+      
+      console.log('📧 Frontend: Sending notification request to:', `${this.baseURL}/api/notifications`);
+      console.log('📧 Frontend: Request body:', JSON.stringify(requestBody, null, 2));
+      console.log('📧 Frontend: Authorization token:', token ? 'Present' : 'Missing');
+      
       const response = await fetch(`${this.baseURL}/api/notifications`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token ? `Bearer ${token}` : '',
         },
-        body: JSON.stringify({
-          userId,
-          ...notification
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {
@@ -103,7 +109,9 @@ class NotificationService {
       }
 
       const data = await response.json();
-      console.log('📧 Notification response:', data);
+      console.log('📧 Frontend: Notification API response:', JSON.stringify(data, null, 2));
+      console.log('📧 Frontend: Email sent status:', data.emailSent);
+      console.log('📧 Frontend: Email message ID:', data.emailMessageId);
       return { success: data.success, error: data.error };
     } catch (error) {
       console.error('Failed to send notification:', error);
