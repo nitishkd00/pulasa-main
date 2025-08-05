@@ -205,12 +205,23 @@ const AdminDashboard = () => {
 
       // Send notification to the user
       const statusLabel = statusOptions.find(s => s.value === mappedStatus)?.label || getDisplayStatus(mappedStatus);
+      
+      console.log('📧 Frontend: About to send notification with:', {
+        userId: order.user_id,
+        orderNumber: order.order_number,
+        statusLabel,
+        orderId: order.id,
+        orderDetails: order
+      });
+      
       const notificationResult = await NotificationService.sendOrderStatusUpdateNotification(
           order.user_id,
           order.order_number,
         statusLabel,
           order.id
         );
+        
+      console.log('📧 Frontend: Notification result:', notificationResult);
         
         if (notificationResult.success) {
         if (notificationResult.error === 'Notification service not available') {
