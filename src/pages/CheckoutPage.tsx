@@ -13,6 +13,13 @@ import NavigationHeader from "@/components/NavigationHeader";
 import FooterSection from "@/components/FooterSection";
 import { useScrollToTop } from "@/hooks/use-scroll-to-top";
 
+// Declare Razorpay types
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
 interface User {
   id: string;
   email: string;
@@ -33,8 +40,7 @@ const CheckoutPage = () => {
     address: "",
     city: "",
     state: "",
-    zip: "",
-    upiReference: ""
+    zip: ""
   });
   const [errors, setErrors] = useState<{[key: string]: string}>({});
 
@@ -115,13 +121,6 @@ const CheckoutPage = () => {
       newErrors.zip = "Pincode must be exactly 6 digits";
     }
 
-    // UPI Reference validation
-    if (!formData.upiReference.trim()) {
-      newErrors.upiReference = "UPI reference is required";
-    } else if (formData.upiReference.trim().length < 5) {
-      newErrors.upiReference = "UPI reference must be at least 5 characters";
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -176,6 +175,7 @@ const CheckoutPage = () => {
         return;
       }
 
+      // Prepare order data
       const orderData = {
         user_id: user.id,
         amount: calculateTotal(),
@@ -191,23 +191,84 @@ const CheckoutPage = () => {
         phone: `+91${formData.phone}`,
         city: formData.city,
         state: formData.state,
-        zip: formData.zip,
-        upi_reference: formData.upiReference,
-        status: "pending"
+        zip: formData.zip
       };
 
-      const result = await MongoDBService.createOrder(orderData);
+      // Create Razorpay order
+      const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/orders/create-razorpay-order`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({
+          amount: calculateTotal(),
+          currency: 'INR',
+          user_id: user.id
+        })
+      });
 
-      if (result.success) {
-        toast.success("Order placed successfully!");
-        clearCart();
-        navigate("/profile");
-      } else {
-        toast.error(result.error || "Failed to place order");
+      const razorpayResult = await response.json();
+
+      if (!razorpayResult.success) {
+        throw new Error(razorpayResult.error || 'Failed to create payment order');
       }
+
+      // Initialize Razorpay payment
+      const options = {
+        key: razorpayResult.key_id,
+        amount: razorpayResult.order.amount,
+        currency: razorpayResult.order.currency,
+        name: 'Pulasa Fish',
+        description: 'Fresh Fish Order',
+        order_id: razorpayResult.order.id,
+        handler: async function (response: any) {
+          try {
+            // Verify payment
+            const verifyResponse = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/orders/verify-payment`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+              },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                orderData: orderData
+              })
+            });
+
+            const verifyResult = await verifyResponse.json();
+
+            if (verifyResult.success) {
+              toast.success("Payment successful! Order placed successfully!");
+              clearCart();
+              navigate("/profile");
+            } else {
+              toast.error(verifyResult.error || "Payment verification failed");
+            }
+          } catch (error) {
+            console.error('Payment verification error:', error);
+            toast.error("Payment verification failed");
+          }
+        },
+        prefill: {
+          name: `${formData.firstName} ${formData.lastName}`,
+          email: user.email,
+          contact: `+91${formData.phone}`
+        },
+        theme: {
+          color: "#7C3AED"
+        }
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+
     } catch (error) {
       console.error('Checkout error:', error);
-      toast.error("An error occurred during checkout");
+      toast.error(error.message || "An error occurred during checkout");
     } finally {
       setLoading(false);
     }
@@ -452,41 +513,17 @@ const CheckoutPage = () => {
                     </div>
                   </div>
                   
-                  {/* UPI QR Code Section - MOVED TO SHIPPING */}
+                  {/* Razorpay Payment Section */}
                   <div className="border-2 border-[hsl(var(--border))] rounded-lg p-4 bg-gray-50">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold text-[hsl(var(--primary))] mb-3">UPI Payment</h3>
-                      <p className="text-sm text-red-600 font-medium mb-4">To confirm your order, kindly scan the QR code and complete the ₹500 payment</p>
+                      <h3 className="text-lg font-semibold text-[hsl(var(--primary))] mb-3">💳 Secure Payment</h3>
+                      <p className="text-sm text-green-600 font-medium mb-4">Complete your order with secure payment via Razorpay</p>
                       <div className="flex flex-col items-center space-y-3">
-                        <img
-                          src="/assets/qrcode.png"
-                          alt="UPI QR Code"
-                          className="w-40 h-40 object-contain border-2 border-[hsl(var(--border))] rounded-lg"
-                        />
                         <div className="text-sm text-[hsl(var(--muted-foreground))]">
-                          <p className="font-medium">UPI ID: <span className="text-[hsl(var(--primary))]">malakalav@ybl</span></p>
+                          <p className="font-medium">Payment Methods: <span className="text-[hsl(var(--primary))]">Cards, UPI, NetBanking, Wallets</span></p>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="upiReference" className="text-[hsl(var(--primary))] font-medium">UPI Reference *</Label>
-                    <Input
-                      id="upiReference"
-                      name="upiReference"
-                      value={formData.upiReference}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="Enter UPI transaction reference"
-                      className={`border-2 ${errors.upiReference ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
-                    />
-                    {errors.upiReference && (
-                      <p className="text-red-500 text-sm mt-1">{errors.upiReference}</p>
-                    )}
-                    <p className="text-sm text-[hsl(var(--muted-foreground))] mt-1">
-                      Please scan the QR code above and enter the transaction reference number
-                    </p>
                   </div>
                   
                   <Button
@@ -494,7 +531,7 @@ const CheckoutPage = () => {
                     className="w-full bg-[hsl(var(--primary))] hover:bg-[hsl(var(--accent))] text-white rounded-full font-semibold text-lg py-3 shadow-md"
                     disabled={loading}
                   >
-                    {loading ? "Processing..." : `Place Order - ₹${calculateTotal().toFixed(2)}`}
+                    {loading ? "Processing..." : `💳 Pay with Razorpay - ₹${calculateTotal().toFixed(2)}`}
                   </Button>
                 </form>
               </CardContent>

@@ -194,19 +194,19 @@ const Orders = () => {
     <div className="flex flex-col min-h-screen bg-[hsl(var(--secondary))]">
       <NavigationHeader />
       <main className="flex-grow container mx-auto px-4 py-24 pt-20">
-        <div className="flex justify-between items-center mb-8">
-          <div>
+          <div className="flex justify-between items-center mb-8">
+            <div>
             <h1 className="text-4xl font-bold text-[hsl(var(--primary))]">My Orders</h1>
             <p className="text-[hsl(var(--muted-foreground))] mt-2">
               Track your order status and history
             </p>
-          </div>
+            </div>
           <Button onClick={handleRefresh} variant="outline" className="flex items-center gap-2">
             <span>Refresh</span>
-          </Button>
-        </div>
+            </Button>
+          </div>
 
-        {orders.length === 0 ? (
+          {orders.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">📦</div>
             <h2 className="text-2xl font-bold text-[hsl(var(--primary))] mb-2">No Orders Yet</h2>
@@ -214,11 +214,11 @@ const Orders = () => {
               You haven't placed any orders yet. Start shopping to see your orders here!
             </p>
             <Button onClick={() => window.location.href = "/"}>
-              Start Shopping
-            </Button>
+                  Start Shopping
+                </Button>
           </div>
-        ) : (
-          <div className="space-y-6">
+          ) : (
+            <div className="space-y-6">
             {orders.map((order) => {
               const products = parseProducts(order.products);
               return (
@@ -248,7 +248,7 @@ const Orders = () => {
                       {/* Products */}
                       <div>
                         <h3 className="font-semibold text-[hsl(var(--primary))] mb-2">Products:</h3>
-                        <div className="space-y-2">
+                      <div className="space-y-2">
                           {Array.isArray(products) ? products.map((product, index) => (
                             <div key={index} className="flex justify-between items-center py-2 border-b border-gray-100">
                               <div>
@@ -256,14 +256,14 @@ const Orders = () => {
                                 <p className="text-sm text-[hsl(var(--muted-foreground))]">
                                   Quantity: {product.quantity}
                                 </p>
-                              </div>
+                        </div>
                               <p className="font-semibold">₹{product.price.toLocaleString()}</p>
                             </div>
                           )) : (
                             <p className="text-[hsl(var(--muted-foreground))]">Product details unavailable</p>
                           )}
-                        </div>
-                      </div>
+                            </div>
+                            </div>
 
                       {/* Status Message */}
                       <div className="bg-gray-50 p-4 rounded-lg">
@@ -289,8 +289,8 @@ const Orders = () => {
                 </Card>
               );
             })}
-          </div>
-        )}
+            </div>
+          )}
       </main>
       <FooterSection />
     </div>

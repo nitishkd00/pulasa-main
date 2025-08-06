@@ -218,16 +218,16 @@ const CheckoutPage = () => {
       <div className="flex flex-col min-h-screen bg-[hsl(var(--secondary))]">
         <NavigationHeader />
         <main className="flex-grow container mx-auto px-4 py-24 pt-20">
-          <div className="text-center">
+        <div className="text-center">
             <h2 className="text-2xl font-bold mb-4 text-[hsl(var(--primary))]">Your cart is empty</h2>
             <p className="text-[hsl(var(--muted-foreground))] mb-4">Add some products to your cart before checkout.</p>
             <Button 
               onClick={() => navigate("/products")}
               className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--accent))] text-white rounded-full"
             >
-              Continue Shopping
-            </Button>
-          </div>
+            Continue Shopping
+          </Button>
+        </div>
         </main>
         <FooterSection />
       </div>
@@ -374,16 +374,16 @@ const CheckoutPage = () => {
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <span className="text-[hsl(var(--muted-foreground))]">+91</span>
                       </div>
-                      <Input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        required
+                    <Input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      required
                         placeholder="Enter 10 digit number"
                         className={`border-2 pl-12 ${errors.phone ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
-                      />
+                    />
                     </div>
                     {errors.phone && (
                       <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
