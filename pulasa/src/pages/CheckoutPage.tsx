@@ -160,6 +160,10 @@ const CheckoutPage = () => {
     }, 0);
   };
 
+  const getAuthToken = () => {
+    return unifiedAuthService.getCurrentToken();
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -176,6 +180,7 @@ const CheckoutPage = () => {
         return;
       }
 
+      // Prepare order data
       const orderData = {
         user_id: user.id,
         amount: calculateTotal(),
@@ -191,23 +196,87 @@ const CheckoutPage = () => {
         phone: `+91${formData.phone}`,
         city: formData.city,
         state: formData.state,
-        zip: formData.zip,
-        upi_reference: formData.upiReference,
-        status: "pending"
+        zip: formData.zip
       };
 
-      const result = await MongoDBService.createOrder(orderData);
+      // Get the correct token
+      const token = getAuthToken();
 
-      if (result.success) {
-        toast.success("Order placed successfully!");
-        clearCart();
-        navigate("/profile");
-      } else {
-        toast.error(result.error || "Failed to place order");
+      // Create Razorpay order for ₹500 token advance
+      const response = await fetch(`${import.meta.env.VITE_UNIFIED_AUTH_URL}/api/orders/create-razorpay-order`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : ''
+        },
+        body: JSON.stringify({
+          currency: 'INR',
+          user_id: user.id
+        })
+      });
+
+      const razorpayResult = await response.json();
+
+      if (!razorpayResult.success) {
+        throw new Error(razorpayResult.error || 'Failed to create payment order');
       }
+
+      // Initialize Razorpay payment
+      const options = {
+        key: razorpayResult.key_id,
+        amount: razorpayResult.order.amount,
+        currency: razorpayResult.order.currency,
+        name: 'Pulasa Fish',
+        description: '₹500 Token Advance - Fresh Fish Order',
+        order_id: razorpayResult.order.id,
+        handler: async function (response: any) {
+          try {
+            // Verify payment
+            const verifyToken = getAuthToken();
+            const verifyResponse = await fetch(`${import.meta.env.VITE_UNIFIED_AUTH_URL}/api/orders/verify-payment`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': verifyToken ? `Bearer ${verifyToken}` : ''
+              },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                orderData: orderData
+              })
+            });
+
+            const verifyResult = await verifyResponse.json();
+
+            if (verifyResult.success) {
+              toast.success("Payment successful! Order placed successfully!");
+              clearCart();
+              navigate("/profile");
+            } else {
+              toast.error(verifyResult.error || "Payment verification failed");
+            }
+          } catch (error) {
+            console.error('Payment verification error:', error);
+            toast.error("Payment verification failed");
+          }
+        },
+        prefill: {
+          name: `${formData.firstName} ${formData.lastName}`,
+          email: user.email,
+          contact: `+91${formData.phone}`
+        },
+        theme: {
+          color: "#7C3AED"
+        }
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+
     } catch (error) {
       console.error('Checkout error:', error);
-      toast.error("An error occurred during checkout");
+      toast.error(error.message || "An error occurred during checkout");
     } finally {
       setLoading(false);
     }
