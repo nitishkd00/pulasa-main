@@ -195,7 +195,7 @@ const CheckoutPage = () => {
       };
 
       // Create Razorpay order for ₹500 token advance
-      const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/orders/create-razorpay-order`, {
+      const response = await fetch(`${import.meta.env.VITE_UNIFIED_AUTH_URL}/api/orders/create-razorpay-order`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -224,7 +224,7 @@ const CheckoutPage = () => {
         handler: async function (response: any) {
           try {
             // Verify payment
-            const verifyResponse = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/orders/verify-payment`, {
+            const verifyResponse = await fetch(`${import.meta.env.VITE_UNIFIED_AUTH_URL}/api/orders/verify-payment`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
