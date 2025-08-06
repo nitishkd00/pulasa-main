@@ -194,7 +194,7 @@ const CheckoutPage = () => {
         zip: formData.zip
       };
 
-      // Create Razorpay order
+      // Create Razorpay order for ₹500 token advance
       const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/orders/create-razorpay-order`, {
         method: 'POST',
         headers: {
@@ -202,7 +202,6 @@ const CheckoutPage = () => {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify({
-          amount: calculateTotal(),
           currency: 'INR',
           user_id: user.id
         })
@@ -220,7 +219,7 @@ const CheckoutPage = () => {
         amount: razorpayResult.order.amount,
         currency: razorpayResult.order.currency,
         name: 'Pulasa Fish',
-        description: 'Fresh Fish Order',
+        description: '₹500 Token Advance - Fresh Fish Order',
         order_id: razorpayResult.order.id,
         handler: async function (response: any) {
           try {
@@ -516,11 +515,12 @@ const CheckoutPage = () => {
                   {/* Razorpay Payment Section */}
                   <div className="border-2 border-[hsl(var(--border))] rounded-lg p-4 bg-gray-50">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold text-[hsl(var(--primary))] mb-3">💳 Secure Payment</h3>
-                      <p className="text-sm text-green-600 font-medium mb-4">Complete your order with secure payment via Razorpay</p>
+                      <h3 className="text-lg font-semibold text-[hsl(var(--primary))] mb-3">💳 Token Advance Payment</h3>
+                      <p className="text-sm text-orange-600 font-medium mb-4">Pay ₹500 now to confirm your order</p>
                       <div className="flex flex-col items-center space-y-3">
                         <div className="text-sm text-[hsl(var(--muted-foreground))]">
                           <p className="font-medium">Payment Methods: <span className="text-[hsl(var(--primary))]">Cards, UPI, NetBanking, Wallets</span></p>
+                          <p className="text-xs mt-2">Remaining balance will be collected after fish is caught</p>
                         </div>
                       </div>
                     </div>
@@ -531,7 +531,7 @@ const CheckoutPage = () => {
                     className="w-full bg-[hsl(var(--primary))] hover:bg-[hsl(var(--accent))] text-white rounded-full font-semibold text-lg py-3 shadow-md"
                     disabled={loading}
                   >
-                    {loading ? "Processing..." : `💳 Pay with Razorpay - ₹${calculateTotal().toFixed(2)}`}
+                    {loading ? "Processing..." : `💳 Pay ₹500 Advance - ₹${calculateTotal().toFixed(2)} Total`}
                   </Button>
                 </form>
               </CardContent>
