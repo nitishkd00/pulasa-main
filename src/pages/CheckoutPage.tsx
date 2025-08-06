@@ -199,7 +199,8 @@ const CheckoutPage = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${unifiedAuthService.getCurrentToken()}`
+
         },
         body: JSON.stringify({
           currency: 'INR',
@@ -228,7 +229,8 @@ const CheckoutPage = () => {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'Authorization': `Bearer ${unifiedAuthService.getCurrentToken()}`
+
               },
               body: JSON.stringify({
                 razorpay_order_id: response.razorpay_order_id,
