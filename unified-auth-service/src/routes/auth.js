@@ -4,6 +4,9 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { authenticateToken } = require('../middleware/auth');
 const databaseBridge = require('../services/DatabaseBridge');
+const OtpVerification = require('../models/OtpVerification');
+const { sendOtpEmail } = require('../services/emailService');
+const crypto = require('crypto');
 
 const router = express.Router();
 
@@ -105,7 +108,18 @@ router.post('/register', [
       });
     }
 
-    // Generate JWT token
+    // Generate OTP
+    const otp = (Math.floor(100000 + Math.random() * 900000)).toString();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+    // Remove any previous OTPs for this email
+    await OtpVerification.deleteMany({ email });
+    // Store OTP
+    await OtpVerification.create({ email, otp, expiresAt, verified: false });
+    // Send OTP email
+    await sendOtpEmail(email, otp);
+
+    // Generate JWT token (but user is not verified yet)
     const token = jwt.sign(
       {
         userId: result.user.id,
@@ -116,33 +130,58 @@ router.post('/register', [
       { expiresIn: '24h' }
     );
 
-    console.log(`✅ Registration successful for: ${email}`);
+    console.log(`✅ Registration successful for: ${email} (OTP sent)`);
 
     res.status(201).json({
       success: true,
-      message: 'Registration successful',
+      message: 'Registration successful. Please verify your email with the OTP sent.',
       user: result.user,
       tokens: {
         jwtToken: token,
         tokenType: 'Bearer',
         expiresIn: '24h'
-      }
+      },
+      otpRequired: true
     });
-
   } catch (error) {
     console.error('❌ Registration error:', error);
-    
     if (error.message === 'User already exists') {
       return res.status(409).json({
         success: false,
         error: 'User already exists'
       });
     }
-
     res.status(500).json({
       success: false,
       error: 'Internal server error'
     });
+  }
+});
+
+// OTP verification endpoint
+router.post('/verify-otp', [
+  body('email').isEmail().normalizeEmail(),
+  body('otp').isLength({ min: 6, max: 6 }),
+  validateRequest
+], async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    const otpRecord = await OtpVerification.findOne({ email, otp, verified: false });
+    if (!otpRecord) {
+      return res.status(400).json({ success: false, error: 'Invalid OTP' });
+    }
+    if (otpRecord.expiresAt < new Date()) {
+      return res.status(400).json({ success: false, error: 'OTP expired' });
+    }
+    // Mark OTP as used
+    otpRecord.verified = true;
+    await otpRecord.save();
+    // Mark user as verified (add a field if needed)
+    await databaseBridge.updateUserByEmail(email, { is_verified: true });
+    res.json({ success: true, message: 'Email verified successfully' });
+  } catch (error) {
+    console.error('❌ OTP verification error:', error);
+    res.status(500).json({ success: false, error: 'Internal server error' });
   }
 });
 

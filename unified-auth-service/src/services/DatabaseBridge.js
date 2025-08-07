@@ -109,6 +109,24 @@ class DatabaseBridge {
     }
   }
 
+  // Update user by email (for OTP verification)
+  async updateUserByEmail(email, updateData) {
+    try {
+      const user = await User.findOneAndUpdate(
+        { email },
+        { ...updateData, updated_at: new Date() },
+        { new: true }
+      );
+      if (!user) {
+        return { success: false, error: 'User not found' };
+      }
+      return { success: true, user: user.toUnifiedUser() };
+    } catch (error) {
+      console.error('User update by email error:', error);
+      return { success: false, error: 'Failed to update user' };
+    }
+  }
+
   // Get user by ID
   async getUserById(userId) {
     try {
