@@ -125,17 +125,21 @@ class UnifiedAuthService {
       console.log("🔍 Backend registration response:", response.data);
 
       if (response.data.success) {
-        // Store session data (without otpRequired field)
-        const sessionData: AuthResponse = {
-          success: response.data.success,
-          user: response.data.user,
-          tokens: response.data.tokens,
-          source: response.data.source || 'auth-service'
-        };
-        this.storeSession(sessionData);
-        
-        // Set auth header for future requests
-        this.setAuthHeader(response.data.tokens.jwtToken);
+        // Store token temporarily for OTP verification
+        if (response.data.otpRequired) {
+          // Store token in localStorage temporarily for OTP verification
+          localStorage.setItem('temp_auth_token', response.data.tokens.jwtToken);
+        } else {
+          // Store session data normally if no OTP required
+          const sessionData: AuthResponse = {
+            success: response.data.success,
+            user: response.data.user,
+            tokens: response.data.tokens,
+            source: response.data.source || 'auth-service'
+          };
+          this.storeSession(sessionData);
+          this.setAuthHeader(response.data.tokens.jwtToken);
+        }
         
         return {
           success: true,
@@ -240,11 +244,35 @@ class UnifiedAuthService {
       });
 
       if (response.data.success) {
-        // Update the current user's verification status
-        const session = this.getStoredSession();
-        if (session) {
-          session.user.is_verified = true;
-          this.storeSession({ ...session, user: session.user });
+        // Get the temporary token stored during registration
+        const tempToken = localStorage.getItem('temp_auth_token');
+        
+        if (tempToken) {
+          // Get user profile with the temporary token
+          const userResponse = await axios.get(`${this.baseURL}/api/auth/profile`, {
+            headers: {
+              'Authorization': `Bearer ${tempToken}`
+            }
+          });
+          
+          if (userResponse.data.success) {
+            // Store the session properly
+            const sessionData: AuthResponse = {
+              success: true,
+              user: userResponse.data.user,
+              tokens: {
+                jwtToken: tempToken,
+                tokenType: 'Bearer',
+                expiresIn: '24h'
+              },
+              source: 'auth-service'
+            };
+            this.storeSession(sessionData);
+            this.setAuthHeader(tempToken);
+            
+            // Clear the temporary token
+            localStorage.removeItem('temp_auth_token');
+          }
         }
         
         return {
