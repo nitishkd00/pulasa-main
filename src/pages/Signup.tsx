@@ -33,8 +33,14 @@ const Signup = () => {
       const result = await unifiedAuthService.register(formData);
 
       if (result.success && result.user) {
-        toast.success("Registration successful!");
-        navigate("/");
+        // Check if OTP verification is required
+        if (result.otpRequired) {
+          toast.success("Registration successful! Please check your email for verification code.");
+          navigate(`/verify-otp?email=${encodeURIComponent(formData.email)}`);
+        } else {
+          toast.success("Registration successful!");
+          navigate("/");
+        }
       } else {
         toast.error(result.error || "Registration failed");
       }

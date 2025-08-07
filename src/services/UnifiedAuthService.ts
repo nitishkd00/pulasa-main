@@ -11,6 +11,7 @@ interface User {
   is_admin: boolean;
   created_at: string;
   updated_at: string;
+  is_verified: boolean; // Added for OTP verification
 }
 
 interface AuthTokens {
@@ -209,6 +210,72 @@ class UnifiedAuthService {
       return {
         success: false,
         error: axiosError.response?.data?.error || errorMessage || 'Failed to get profile'
+      };
+    }
+  }
+
+  /**
+   * Verify OTP for email verification
+   */
+  async verifyOtp(email: string, otp: string): Promise<{ success: boolean; error?: string }> {
+    try {
+      const response = await axios.post(`${this.baseURL}/api/auth/verify-otp`, {
+        email,
+        otp
+      });
+
+      if (response.data.success) {
+        // Update the current user's verification status
+        const session = this.getStoredSession();
+        if (session) {
+          session.user.is_verified = true;
+          this.storeSession({ ...session, user: session.user });
+        }
+        
+        return {
+          success: true
+        };
+      } else {
+        return {
+          success: false,
+          error: response.data.error || 'OTP verification failed'
+        };
+      }
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const axiosError = error as { response?: { data?: { error?: string } } };
+      return {
+        success: false,
+        error: axiosError.response?.data?.error || errorMessage || 'OTP verification failed'
+      };
+    }
+  }
+
+  /**
+   * Resend OTP for email verification
+   */
+  async resendOtp(email: string): Promise<{ success: boolean; error?: string }> {
+    try {
+      const response = await axios.post(`${this.baseURL}/api/auth/resend-otp`, {
+        email
+      });
+
+      if (response.data.success) {
+        return {
+          success: true
+        };
+      } else {
+        return {
+          success: false,
+          error: response.data.error || 'Failed to resend OTP'
+        };
+      }
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const axiosError = error as { response?: { data?: { error?: string } } };
+      return {
+        success: false,
+        error: axiosError.response?.data?.error || errorMessage || 'Failed to resend OTP'
       };
     }
   }

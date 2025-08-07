@@ -13,6 +13,7 @@ import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import ProductPage from "./pages/ProductPage";
 import Signup from "./pages/Signup";
+import VerifyOtp from "./pages/VerifyOtp";
 import Profile from "./pages/Profile";
 import Home from "./pages/Home";
 import Orders from "./pages/Orders";
@@ -40,6 +41,7 @@ const App = () => (
                 <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/products" element={<ProductPage />} />
                 <Route path="/signup" element={<Signup />} />
+                <Route path="/verify-otp" element={<VerifyOtp />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/orders" element={<Orders />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
