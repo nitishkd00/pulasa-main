@@ -84,7 +84,13 @@ class UnifiedAuthService {
 
       if (response.data.success) {
         // Store session data
-        this.storeSession(response.data);
+        const sessionData: AuthResponse = {
+          success: response.data.success,
+          user: response.data.user,
+          tokens: response.data.tokens,
+          source: response.data.source || 'auth-service'
+        };
+        this.storeSession(sessionData);
         
         // Set auth header for future requests
         this.setAuthHeader(response.data.tokens.jwtToken);
@@ -112,20 +118,29 @@ class UnifiedAuthService {
   /**
    * Register user with unified authentication
    */
-  async register(userData: { email: string; password: string; name: string; phone?: string; address?: string }): Promise<{ success: boolean; user?: User; error?: string }> {
+  async register(userData: { email: string; password: string; name: string; phone?: string; address?: string }): Promise<{ success: boolean; user?: User; error?: string; otpRequired?: boolean }> {
     try {
-      const response = await axios.post<AuthResponse>(`${this.baseURL}/api/auth/register`, userData);
+      const response = await axios.post<AuthResponse & { otpRequired?: boolean }>(`${this.baseURL}/api/auth/register`, userData);
+
+      console.log("🔍 Backend registration response:", response.data);
 
       if (response.data.success) {
-        // Store session data
-        this.storeSession(response.data);
+        // Store session data (without otpRequired field)
+        const sessionData: AuthResponse = {
+          success: response.data.success,
+          user: response.data.user,
+          tokens: response.data.tokens,
+          source: response.data.source || 'auth-service'
+        };
+        this.storeSession(sessionData);
         
         // Set auth header for future requests
         this.setAuthHeader(response.data.tokens.jwtToken);
         
         return {
           success: true,
-          user: response.data.user
+          user: response.data.user,
+          otpRequired: response.data.otpRequired
         };
       } else {
         return {
@@ -313,7 +328,7 @@ class UnifiedAuthService {
   /**
    * Store session data in localStorage
    */
-  storeSession(sessionData: AuthResponse): void {
+  storeSession(sessionData: { user: User; tokens: AuthTokens; success: boolean; source: string }): void {
     const session = {
       user: sessionData.user,
       tokens: sessionData.tokens,

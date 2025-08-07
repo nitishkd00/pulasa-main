@@ -32,16 +32,21 @@ const Signup = () => {
     try {
       const result = await unifiedAuthService.register(formData);
 
+      console.log("🔍 Registration result:", result);
+
       if (result.success && result.user) {
         // Check if OTP verification is required
         if (result.otpRequired) {
+          console.log("📧 OTP required, redirecting to verification");
           toast.success("Registration successful! Please check your email for verification code.");
           navigate(`/verify-otp?email=${encodeURIComponent(formData.email)}`);
         } else {
+          console.log("✅ Registration successful without OTP");
           toast.success("Registration successful!");
           navigate("/");
         }
       } else {
+        console.log("❌ Registration failed:", result.error);
         toast.error(result.error || "Registration failed");
       }
     } catch (error) {
