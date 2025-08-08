@@ -239,9 +239,14 @@ const NavigationHeader = () => {
                 alt="Pulasa.com Logo"
                 className="w-10 h-10 object-contain rounded-full shadow-md"
               />
-              <h1 className="text-2xl font-bold text-[hsl(var(--primary))] tracking-wide group-hover:text-[hsl(var(--accent))] transition-colors">
-                Pulasa<span className="text-[hsl(var(--accent))]">.com</span>
-              </h1>
+              <div>
+                <h1 className="text-2xl font-bold text-[hsl(var(--primary))] tracking-wide group-hover:text-[hsl(var(--accent))] transition-colors">
+                  Pulasa<span className="text-[hsl(var(--accent))]">.com</span>
+                </h1>
+                <p className="text-xs text-[hsl(var(--muted-foreground))] font-medium -mt-1">
+                  Pulasa Fish Delivery
+                </p>
+              </div>
             </Link>
           </div>
 

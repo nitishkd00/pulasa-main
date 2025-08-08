@@ -138,7 +138,7 @@ class UnifiedAuthService {
             source: response.data.source || 'auth-service'
           };
           this.storeSession(sessionData);
-          this.setAuthHeader(response.data.tokens.jwtToken);
+        this.setAuthHeader(response.data.tokens.jwtToken);
         }
         
         return {

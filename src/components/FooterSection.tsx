@@ -1,5 +1,6 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 const FooterSection = () => {
   return (
@@ -14,9 +15,14 @@ const FooterSection = () => {
                 alt="Pulasa.com Logo"
                 className="w-12 h-12 object-contain rounded-full shadow-lg border-2 border-[hsl(var(--primary))/20]"
               />
-              <h3 className="text-2xl font-bold text-[hsl(var(--primary))]">
-                Pulasa<span className="text-[hsl(var(--accent))]">.com</span>
-              </h3>
+              <div>
+                <h3 className="text-2xl font-bold text-[hsl(var(--primary))]">
+                  Pulasa<span className="text-[hsl(var(--accent))]">.com</span>
+                </h3>
+                <p className="text-sm text-[hsl(var(--muted-foreground))] font-medium">
+                  Pulasa Fish Delivery
+                </p>
+              </div>
             </div>
             <p className="text-[hsl(var(--muted-foreground))] leading-relaxed text-base">
               Bringing the royal taste of Godavari's finest Pulasa fish directly
@@ -25,28 +31,46 @@ const FooterSection = () => {
             </p>
           </div>
 
-          {/* Quick Links */}
+          {/* Quick Links - Only Navigation Bar Links */}
           <div>
             <h4 className="text-lg font-semibold mb-4 text-[hsl(var(--primary))] tracking-wide">
               Quick Links
             </h4>
             <ul className="space-y-2">
-              {[
-                "Fresh Catch",
-                "Our Story",
-                "Recipes",
-                "Order Tracking",
-                "Customer Reviews",
-              ].map((link) => (
-                <li key={link}>
-                  <a
-                    href="#"
-                    className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors hover:underline text-base"
-                  >
-                    {link}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <Link
+                  to="/"
+                  className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors hover:underline text-base"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/blogs"
+                  className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors hover:underline text-base"
+                >
+                  Blogs
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/products"
+                  className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors hover:underline text-base"
+                >
+                  Fresh Catch
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="https://auction.pulasa.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors hover:underline text-base"
+                >
+                  Auctions
+                </a>
+              </li>
             </ul>
           </div>
 

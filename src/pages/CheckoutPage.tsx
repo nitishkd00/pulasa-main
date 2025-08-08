@@ -299,30 +299,30 @@ const CheckoutPage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-[hsl(var(--secondary))]">
       <NavigationHeader />
-      <main className="flex-grow container mx-auto px-4 py-24 pt-20">
-        <h1 className="text-4xl font-bold text-center text-[hsl(var(--primary))] mb-12">Checkout</h1>
+      <main className="flex-grow container mx-auto px-4 py-8 sm:py-12 lg:py-24 pt-16 sm:pt-20">
+        <h1 className="text-3xl sm:text-4xl font-bold text-center text-[hsl(var(--primary))] mb-8 sm:mb-12">Checkout</h1>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           {/* Order Summary */}
-          <div>
+          <div className="order-2 lg:order-1">
             <Card className="border-2 border-[hsl(var(--border))] bg-white shadow-md">
               <CardHeader>
-                <CardTitle className="text-[hsl(var(--primary))] text-2xl font-bold">Order Summary</CardTitle>
+                <CardTitle className="text-[hsl(var(--primary))] text-xl sm:text-2xl font-bold">Order Summary</CardTitle>
                 <CardDescription className="text-[hsl(var(--muted-foreground))]">Review your items</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {cartItems.map((item) => (
-                    <div key={item.id} className="flex justify-between items-center">
-                      <div>
-                        <h3 className="font-semibold text-[hsl(var(--primary))]">{item.name} per kg</h3>
-                        <p className="text-sm text-[hsl(var(--muted-foreground))]">Quantity: {item.quantity}</p>
+                    <div key={item.id} className="flex justify-between items-start sm:items-center">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-[hsl(var(--primary))] text-sm sm:text-base">{item.name} per kg</h3>
+                        <p className="text-xs sm:text-sm text-[hsl(var(--muted-foreground))]">Quantity: {item.quantity}</p>
                       </div>
-                      <p className="font-semibold text-[hsl(var(--primary))]">₹{(parsePrice(item.price) * item.quantity).toFixed(2)}</p>
+                      <p className="font-semibold text-[hsl(var(--primary))] text-sm sm:text-base ml-2">₹{(parsePrice(item.price) * item.quantity).toFixed(2)}</p>
                     </div>
                   ))}
                   <div className="border-t border-[hsl(var(--border))] pt-4">
-                    <div className="flex justify-between items-center font-bold text-lg">
+                    <div className="flex justify-between items-center font-bold text-base sm:text-lg">
                       <span className="text-[hsl(var(--primary))]">Total</span>
                       <span className="text-[hsl(var(--primary))]">₹{calculateTotal().toFixed(2)}</span>
                     </div>
@@ -334,7 +334,7 @@ const CheckoutPage = () => {
             {/* Payment Process Information - MOVED UP */}
             <Card className="border-2 border-[hsl(var(--border))] bg-white shadow-md mt-6">
               <CardHeader>
-                <CardTitle className="text-[hsl(var(--primary))] text-xl font-bold">🐟 Payment & Order Process</CardTitle>
+                <CardTitle className="text-[hsl(var(--primary))] text-lg sm:text-xl font-bold">🐟 Payment & Order Process</CardTitle>
                 <CardDescription className="text-[hsl(var(--muted-foreground))]">
                   Pay ₹500 now to confirm your order.
                 </CardDescription>
@@ -346,40 +346,40 @@ const CheckoutPage = () => {
                   </p>
                   <div className="space-y-3">
                     <div className="flex items-start space-x-3">
-                      <span className="bg-[hsl(var(--primary))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">1</span>
-                      <div>
-                        <p className="font-medium text-[hsl(var(--primary))]">Order Review</p>
-                        <p className="text-sm">Once payment is done, our admin team will review and approve your order.</p>
+                      <span className="bg-[hsl(var(--primary))] text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0 mt-0.5">1</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-[hsl(var(--primary))] text-sm sm:text-base">Order Review</p>
+                        <p className="text-xs sm:text-sm">Once payment is done, our admin team will review and approve your order.</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
-                      <span className="bg-[hsl(var(--primary))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">2</span>
-                      <div>
-                        <p className="font-medium text-[hsl(var(--primary))]">Catch & Update</p>
-                        <p className="text-sm">After the fish is caught, we'll update you with:</p>
-                        <ul className="list-disc list-inside ml-4 mt-1 text-sm">
+                      <span className="bg-[hsl(var(--primary))] text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0 mt-0.5">2</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-[hsl(var(--primary))] text-sm sm:text-base">Catch & Update</p>
+                        <p className="text-xs sm:text-sm">After the fish is caught, we'll update you with:</p>
+                        <ul className="list-disc list-inside ml-4 mt-1 text-xs sm:text-sm">
                           <li>The weight of the fish</li>
                           <li>The final price</li>
                         </ul>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
-                      <span className="bg-[hsl(var(--primary))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">3</span>
-                      <div>
-                        <p className="font-medium text-[hsl(var(--primary))]">Final Payment</p>
-                        <p className="text-sm">You'll then pay the remaining balance before delivery.</p>
+                      <span className="bg-[hsl(var(--primary))] text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0 mt-0.5">3</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-[hsl(var(--primary))] text-sm sm:text-base">Final Payment</p>
+                        <p className="text-xs sm:text-sm">You'll then pay the remaining balance before delivery.</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
-                      <span className="bg-[hsl(var(--accent))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">4</span>
-                      <div>
-                        <p className="font-medium text-[hsl(var(--accent))]">Refund Policy</p>
-                        <p className="text-sm">If we are unable to:</p>
-                        <ul className="list-disc list-inside ml-4 mt-1 text-sm">
+                      <span className="bg-[hsl(var(--accent))] text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0 mt-0.5">4</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-[hsl(var(--accent))] text-sm sm:text-base">Refund Policy</p>
+                        <p className="text-xs sm:text-sm">If we are unable to:</p>
+                        <ul className="list-disc list-inside ml-4 mt-1 text-xs sm:text-sm">
                           <li>Catch the fish</li>
                           <li>Or unable to deliver your order</li>
                         </ul>
-                        <p className="text-sm mt-2 font-medium text-[hsl(var(--accent))]">
+                        <p className="text-xs sm:text-sm mt-2 font-medium text-[hsl(var(--accent))]">
                           Your ₹500 will be fully refunded — no worries!
                         </p>
                       </div>
@@ -391,50 +391,50 @@ const CheckoutPage = () => {
           </div>
 
           {/* Checkout Form */}
-          <div>
+          <div className="order-1 lg:order-2">
             <Card className="border-2 border-[hsl(var(--border))] bg-white shadow-md">
               <CardHeader>
-                <CardTitle className="text-[hsl(var(--primary))] text-2xl font-bold">Shipping Information</CardTitle>
+                <CardTitle className="text-[hsl(var(--primary))] text-xl sm:text-2xl font-bold">Shipping Information</CardTitle>
                 <CardDescription className="text-[hsl(var(--muted-foreground))]">Enter your delivery details</CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="firstName" className="text-[hsl(var(--primary))] font-medium">First Name *</Label>
+                      <Label htmlFor="firstName" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">First Name *</Label>
                       <Input
                         id="firstName"
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleInputChange}
                         required
-                        className={`border-2 ${errors.firstName ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
+                        className={`border-2 text-sm sm:text-base ${errors.firstName ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
                       />
                       {errors.firstName && (
-                        <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>
+                        <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.firstName}</p>
                       )}
                     </div>
                     <div>
-                      <Label htmlFor="lastName" className="text-[hsl(var(--primary))] font-medium">Last Name *</Label>
+                      <Label htmlFor="lastName" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">Last Name *</Label>
                       <Input
                         id="lastName"
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleInputChange}
                         required
-                        className={`border-2 ${errors.lastName ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
+                        className={`border-2 text-sm sm:text-base ${errors.lastName ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
                       />
                       {errors.lastName && (
-                        <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>
+                        <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.lastName}</p>
                       )}
                     </div>
                   </div>
                   
                   <div>
-                    <Label htmlFor="phone" className="text-[hsl(var(--primary))] font-medium">Phone Number *</Label>
+                    <Label htmlFor="phone" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">Phone Number *</Label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <span className="text-[hsl(var(--muted-foreground))]">+91</span>
+                        <span className="text-[hsl(var(--muted-foreground))] text-sm sm:text-base">+91</span>
                       </div>
                       <Input
                         id="phone"
@@ -444,16 +444,16 @@ const CheckoutPage = () => {
                         onChange={handleInputChange}
                         required
                         placeholder="Enter 10 digit number"
-                        className={`border-2 pl-12 ${errors.phone ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
+                        className={`border-2 pl-12 text-sm sm:text-base ${errors.phone ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
                       />
                     </div>
                     {errors.phone && (
-                      <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+                      <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.phone}</p>
                     )}
                   </div>
                   
                   <div>
-                    <Label htmlFor="address" className="text-[hsl(var(--primary))] font-medium">Address *</Label>
+                    <Label htmlFor="address" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">Address *</Label>
                     <Input
                       id="address"
                       name="address"
@@ -461,44 +461,44 @@ const CheckoutPage = () => {
                       onChange={handleInputChange}
                       required
                       placeholder="Enter complete address"
-                      className={`border-2 ${errors.address ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
+                      className={`border-2 text-sm sm:text-base ${errors.address ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
                     />
                     {errors.address && (
-                      <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+                      <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.address}</p>
                     )}
                   </div>
                   
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
-                      <Label htmlFor="city" className="text-[hsl(var(--primary))] font-medium">City *</Label>
+                      <Label htmlFor="city" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">City *</Label>
                       <Input
                         id="city"
                         name="city"
                         value={formData.city}
                         onChange={handleInputChange}
                         required
-                        className={`border-2 ${errors.city ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
+                        className={`border-2 text-sm sm:text-base ${errors.city ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
                       />
                       {errors.city && (
-                        <p className="text-red-500 text-sm mt-1">{errors.city}</p>
+                        <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.city}</p>
                       )}
                     </div>
                     <div>
-                      <Label htmlFor="state" className="text-[hsl(var(--primary))] font-medium">State *</Label>
+                      <Label htmlFor="state" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">State *</Label>
                       <Input
                         id="state"
                         name="state"
                         value={formData.state}
                         onChange={handleInputChange}
                         required
-                        className={`border-2 ${errors.state ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
+                        className={`border-2 text-sm sm:text-base ${errors.state ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
                       />
                       {errors.state && (
-                        <p className="text-red-500 text-sm mt-1">{errors.state}</p>
+                        <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.state}</p>
                       )}
                     </div>
                     <div>
-                      <Label htmlFor="zip" className="text-[hsl(var(--primary))] font-medium">Pincode *</Label>
+                      <Label htmlFor="zip" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">Pincode *</Label>
                       <Input
                         id="zip"
                         name="zip"
@@ -506,10 +506,10 @@ const CheckoutPage = () => {
                         onChange={handleInputChange}
                         required
                         placeholder="6 digits"
-                        className={`border-2 ${errors.zip ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
+                        className={`border-2 text-sm sm:text-base ${errors.zip ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
                       />
                       {errors.zip && (
-                        <p className="text-red-500 text-sm mt-1">{errors.zip}</p>
+                        <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.zip}</p>
                       )}
                     </div>
                   </div>
@@ -517,10 +517,10 @@ const CheckoutPage = () => {
                   {/* Razorpay Payment Section */}
                   <div className="border-2 border-[hsl(var(--border))] rounded-lg p-4 bg-gray-50">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold text-[hsl(var(--primary))] mb-3">💳 Token Advance Payment</h3>
+                      <h3 className="text-base sm:text-lg font-semibold text-[hsl(var(--primary))] mb-3">💳 Token Advance Payment</h3>
                       <p className="text-sm text-orange-600 font-medium mb-4">Pay ₹500 now to confirm your order</p>
                       <div className="flex flex-col items-center space-y-3">
-                        <div className="text-sm text-[hsl(var(--muted-foreground))]">
+                        <div className="text-xs sm:text-sm text-[hsl(var(--muted-foreground))]">
                           <p className="font-medium">Payment Methods: <span className="text-[hsl(var(--primary))]">Cards, UPI, NetBanking, Wallets</span></p>
                           <p className="text-xs mt-2">Remaining balance will be collected after fish is caught</p>
                         </div>
@@ -530,10 +530,10 @@ const CheckoutPage = () => {
                   
                   <Button
                     type="submit"
-                    className="w-full bg-[hsl(var(--primary))] hover:bg-[hsl(var(--accent))] text-white rounded-full font-semibold text-lg py-3 shadow-md"
+                    className="w-full bg-[hsl(var(--primary))] hover:bg-[hsl(var(--accent))] text-white rounded-full font-semibold text-base sm:text-lg py-3 shadow-md"
                     disabled={loading}
                   >
-                    {loading ? "Processing..." : `💳 Pay ₹500 Advance - ₹${calculateTotal().toFixed(2)} Total`}
+                    {loading ? "Processing..." : "💳 Pay ₹500 Token Advance"}
                   </Button>
                 </form>
               </CardContent>
