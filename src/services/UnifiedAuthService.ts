@@ -25,6 +25,7 @@ interface AuthResponse {
   user: User;
   tokens: AuthTokens;
   source: string;
+  error?: string;
 }
 
 interface ValidationResponse {
@@ -389,6 +390,63 @@ class UnifiedAuthService {
    */
   clearAuthHeader(): void {
     delete axios.defaults.headers.common['Authorization'];
+  }
+
+  /**
+   * Google OAuth login
+   */
+  async googleLogin(idToken: string): Promise<{ success: boolean; user?: User; error?: string }> {
+    try {
+      const response = await axios.post<AuthResponse>(`${this.baseURL}/api/auth/google`, {
+        idToken
+      });
+
+      if (response.data.success) {
+        // Store session data
+        const sessionData: AuthResponse = {
+          success: response.data.success,
+          user: response.data.user,
+          tokens: response.data.tokens,
+          source: response.data.source || 'google-oauth'
+        };
+        this.storeSession(sessionData);
+        
+        // Set auth header for future requests
+        this.setAuthHeader(response.data.tokens.jwtToken);
+        
+        return {
+          success: true,
+          user: response.data.user
+        };
+      } else {
+        return {
+          success: false,
+          error: response.data.error || 'Google login failed'
+        };
+      }
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const axiosError = error as { response?: { data?: { error?: string } } };
+      return {
+        success: false,
+        error: axiosError.response?.data?.error || errorMessage || 'Google login failed'
+      };
+    }
+  }
+
+  /**
+   * Check if user exists by email (for Google OAuth)
+   */
+  async checkUserExists(email: string): Promise<{ exists: boolean; user?: User }> {
+    try {
+      const response = await axios.get(`${this.baseURL}/api/auth/check-user/${encodeURIComponent(email)}`);
+      return {
+        exists: response.data.exists,
+        user: response.data.user
+      };
+    } catch (error) {
+      return { exists: false };
+    }
   }
 }
 

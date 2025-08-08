@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import unifiedAuthService from "@/services/UnifiedAuthService";
+import GoogleOAuthButton from "@/components/GoogleOAuthButton";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -55,6 +56,14 @@ const Signup = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleSuccess = (user: any) => {
+    navigate("/");
+  };
+
+  const handleGoogleError = (error: string) => {
+    console.error("Google OAuth error:", error);
   };
 
   return (
@@ -116,12 +125,11 @@ const Signup = () => {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  minLength={6}
-                  placeholder="Enter your password (min 6 characters)"
+                  placeholder="Enter your password"
                 />
               </div>
               <div>
-                <Label htmlFor="phone">Phone (Optional)</Label>
+                <Label htmlFor="phone">Phone Number</Label>
                 <Input
                   id="phone"
                   name="phone"
@@ -132,7 +140,7 @@ const Signup = () => {
                 />
               </div>
               <div>
-                <Label htmlFor="address">Address (Optional)</Label>
+                <Label htmlFor="address">Address</Label>
                 <Input
                   id="address"
                   name="address"
@@ -150,6 +158,25 @@ const Signup = () => {
                 {loading ? "Creating account..." : "Create account"}
               </Button>
             </form>
+            
+            {/* Divider */}
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+
+            {/* Google OAuth Button */}
+            <GoogleOAuthButton
+              variant="signup"
+              onSuccess={handleGoogleSuccess}
+              onError={handleGoogleError}
+            />
           </CardContent>
         </Card>
       </div>
