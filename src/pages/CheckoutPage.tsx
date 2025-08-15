@@ -12,6 +12,7 @@ import { parsePrice } from "@/lib/utils";
 import NavigationHeader from "@/components/NavigationHeader";
 import FooterSection from "@/components/FooterSection";
 import { useScrollToTop } from "@/hooks/use-scroll-to-top";
+import { CreditCard } from "lucide-react";
 
 // Declare Razorpay types
 declare global {
@@ -29,7 +30,7 @@ interface User {
 }
 
 const CheckoutPage = () => {
-  const { cartItems, clearCart } = useCart();
+  const { cartItems, clearCart, clearCartAfterPurchase } = useCart();
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
@@ -47,6 +48,15 @@ const CheckoutPage = () => {
   // Scroll to top when component mounts
   useScrollToTop();
 
+  // Security fix: Redirect if no cart items
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      toast.error("Your cart is empty. Please add items before checkout.");
+      navigate("/cart");
+      return;
+    }
+  }, [cartItems.length, navigate]);
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -60,14 +70,23 @@ const CheckoutPage = () => {
             phone: currentUser.phone || "",
             address: currentUser.address || ""
           }));
+        } else {
+          // Security fix: Redirect to login if user is not authenticated
+          toast.error("Please login to access checkout");
+          navigate("/login");
+          return;
         }
       } catch (error) {
         console.error('Failed to fetch user:', error);
+        // Security fix: Redirect to login on auth error
+        toast.error("Authentication failed. Please login again.");
+        navigate("/login");
+        return;
       }
     };
 
     fetchUser();
-  }, []);
+  }, [navigate]);
 
   const validateForm = () => {
     const newErrors: {[key: string]: string} = {};
@@ -125,66 +144,6 @@ const CheckoutPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Individual field validation for real-time feedback
-  const validateField = (fieldName: string) => {
-    const value = formData[fieldName as keyof typeof formData];
-    let error = "";
-
-    switch (fieldName) {
-      case 'firstName':
-        if (!value.trim()) {
-          error = "First name is required";
-        } else if (value.trim().length < 2) {
-          error = "First name must be at least 2 characters";
-        }
-        break;
-      case 'lastName':
-        if (!value.trim()) {
-          error = "Last name is required";
-        } else if (value.trim().length < 2) {
-          error = "Last name must be at least 2 characters";
-        }
-        break;
-      case 'phone':
-        if (!value.trim()) {
-          error = "Phone number is required";
-        } else if (!/^\d{10}$/.test(value.trim())) {
-          error = "Phone number must be exactly 10 digits";
-        }
-        break;
-      case 'address':
-        if (!value.trim()) {
-          error = "Address is required";
-        } else if (value.trim().length < 10) {
-          error = "Address must be at least 10 characters";
-        }
-        break;
-      case 'city':
-        if (!value.trim()) {
-          error = "City is required";
-        } else if (value.trim().length < 2) {
-          error = "City must be at least 2 characters";
-        }
-        break;
-      case 'state':
-        if (!value.trim()) {
-          error = "State is required";
-        } else if (value.trim().length < 2) {
-          error = "State must be at least 2 characters";
-        }
-        break;
-      case 'zip':
-        if (!value.trim()) {
-          error = "Pincode is required";
-        } else if (!/^\d{6}$/.test(value.trim())) {
-          error = "Pincode must be exactly 6 digits";
-        }
-        break;
-    }
-
-    setErrors(prev => ({ ...prev, [fieldName]: error }));
-  };
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     
@@ -221,6 +180,19 @@ const CheckoutPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Security fix: Check if user is authenticated and has items in cart
+    if (!user) {
+      toast.error("Please login to complete checkout");
+      navigate("/login");
+      return;
+    }
+
+    if (cartItems.length === 0) {
+      toast.error("Your cart is empty. Please add items before checkout.");
+      navigate("/cart");
+      return;
+    }
     
     if (!validateForm()) {
       toast.error("Please fix the errors in the form");
@@ -304,7 +276,7 @@ const CheckoutPage = () => {
 
             if (verifyResult.success) {
               toast.success("Payment successful! Order placed successfully!");
-              clearCart();
+              clearCartAfterPurchase();
               navigate("/profile");
             } else {
               toast.error(verifyResult.error || "Payment verification failed");
@@ -359,300 +331,250 @@ const CheckoutPage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-[hsl(var(--secondary))]">
       <NavigationHeader />
-      <main className="flex-grow container mx-auto px-4 py-8 sm:py-12 lg:py-24 pt-16 sm:pt-20">
+      <main className="flex-grow container mx-auto px-4 py-8 sm:py-12 lg:py-24 pt-28">
         <h1 className="text-3xl sm:text-4xl font-bold text-center text-[hsl(var(--primary))] mb-8 sm:mb-12">Checkout</h1>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           {/* Order Summary */}
-          <div className="order-2 lg:order-1">
-            <Card className="border-2 border-[hsl(var(--border))] bg-white shadow-md">
-              <CardHeader>
-                <CardTitle className="text-[hsl(var(--primary))] text-xl sm:text-2xl font-bold">Order Summary</CardTitle>
-                <CardDescription className="text-[hsl(var(--muted-foreground))]">Review your items</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {cartItems.map((item) => (
-                    <div key={item.id} className="flex justify-between items-start sm:items-center">
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-[hsl(var(--primary))] text-sm sm:text-base">{item.name} per kg</h3>
-                        <p className="text-xs sm:text-sm text-[hsl(var(--muted-foreground))]">Quantity: {item.quantity}</p>
-                      </div>
-                      <p className="font-semibold text-[hsl(var(--primary))] text-sm sm:text-base ml-2">₹{(parsePrice(item.price) * item.quantity).toFixed(2)}</p>
+          <div className="order-1 lg:order-1">
+            <Card className="bg-white rounded-2xl shadow-xl border border-[hsl(var(--border))] p-6">
+              <h2 className="text-2xl font-bold text-[hsl(var(--foreground))] mb-6">
+                Order Summary
+              </h2>
+              
+              <div className="space-y-4 mb-6">
+                {cartItems.map((item) => (
+                  <div key={item.id} className="flex justify-between items-start sm:items-center p-3 bg-[hsl(var(--muted))] bg-opacity-30 rounded-lg">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-[hsl(var(--foreground))] text-sm sm:text-base">{item.name} per kg</h3>
+                      <p className="text-xs sm:text-sm text-[hsl(var(--muted-foreground))]">Quantity: {item.quantity}</p>
                     </div>
-                  ))}
-                  <div className="border-t border-[hsl(var(--border))] pt-4">
-                    <div className="flex justify-between items-center font-bold text-base sm:text-lg">
-                      <span className="text-[hsl(var(--primary))]">Total</span>
-                      <span className="text-[hsl(var(--primary))]">₹{calculateTotal().toFixed(2)}</span>
+                    <p className="font-semibold text-[hsl(var(--primary))] text-sm sm:text-base ml-2">₹{(parsePrice(item.price) * item.quantity).toFixed(2)}</p>
+                  </div>
+                ))}
+                
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[hsl(var(--muted-foreground))]">Subtotal</span>
+                    <span className="font-semibold text-[hsl(var(--foreground))]">
+                      ₹{calculateTotal().toFixed(2)} (estimated for ~1kg)
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-[hsl(var(--muted-foreground))]">Shipping</span>
+                    <span className="font-semibold text-[hsl(var(--accent))]">Free</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-[hsl(var(--muted-foreground))]">Token Advance</span>
+                    <span className="font-semibold text-[hsl(var(--foreground))]">₹500 (pay now)</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-[hsl(var(--muted-foreground))]">Estimated Remaining</span>
+                    <span className="font-semibold text-[hsl(var(--foreground))]">
+                      ₹{(calculateTotal() - 500).toFixed(2)} (varies by actual weight)
+                    </span>
+                  </div>
+                  <div className="border-t pt-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-bold text-[hsl(var(--foreground))]">Final Total</span>
+                      <span className="text-xs text-[hsl(var(--muted-foreground))]">Based on actual fish weight caught</span>
+                    </div>
+                  </div>
+                  <div className="border-t pt-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-lg font-bold text-[hsl(var(--primary))]">Payment Required Now</span>
+                      <span className="text-2xl font-bold text-[hsl(var(--primary))]">₹500</span>
                     </div>
                   </div>
                 </div>
-              </CardContent>
+                
+                <div className="mt-4 p-3 bg-[hsl(34deg_81.22%_70.96%)] rounded-lg border border-[hsl(var(--accent))] border-opacity-5">
+                  <p className="text-xs sm:text-sm text-[hsl(var(--foreground))]">
+                    <span className="font-medium text-[hsl(var(--foreground))]">Note:</span> We'll inform you of the final price and weight once the fish is caught. The remaining balance will be calculated based on the actual weight of your fish.
+                  </p>
+                </div>
+              </div>
             </Card>
 
-            {/* Payment Process Information - MOVED UP */}
-            <Card className="border-2 border-[hsl(var(--border))] bg-white shadow-md mt-6">
-              <CardHeader>
-                <CardTitle className="text-[hsl(var(--primary))] text-lg sm:text-xl font-bold">🐟 Payment & Order Process</CardTitle>
-                <CardDescription className="text-[hsl(var(--muted-foreground))]">
-                  Pay ₹500 now to confirm your order.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4 text-[hsl(var(--muted-foreground))]">
-                  <p className="text-sm">
-                    This is a token advance, and here's how the process works:
-                  </p>
-                  <div className="space-y-3">
-                    <div className="flex items-start space-x-3">
-                      <span className="bg-[hsl(var(--primary))] text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0 mt-0.5">1</span>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-[hsl(var(--primary))] text-sm sm:text-base">Order Review</p>
-                        <p className="text-xs sm:text-sm">Once payment is done, our admin team will review and approve your order.</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3">
-                      <span className="bg-[hsl(var(--primary))] text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0 mt-0.5">2</span>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-[hsl(var(--primary))] text-sm sm:text-base">Catch & Update</p>
-                        <p className="text-xs sm:text-sm">After the fish is caught, we'll update you with:</p>
-                        <ul className="list-disc list-inside ml-4 mt-1 text-xs sm:text-sm">
-                          <li>The weight of the fish</li>
-                          <li>The final price</li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3">
-                      <span className="bg-[hsl(var(--primary))] text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0 mt-0.5">3</span>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-[hsl(var(--primary))] text-sm sm:text-base">Final Payment</p>
-                        <p className="text-xs sm:text-sm">You'll then pay the remaining balance before delivery.</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3">
-                      <span className="bg-[hsl(var(--accent))] text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0 mt-0.5">4</span>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-[hsl(var(--accent))] text-sm sm:text-base">Refund Policy</p>
-                        <p className="text-xs sm:text-sm">If we are unable to:</p>
-                        <ul className="list-disc list-inside ml-4 mt-1 text-xs sm:text-sm">
-                          <li>Catch the fish</li>
-                          <li>Or unable to deliver your order</li>
-                        </ul>
-                        <p className="text-xs sm:text-sm mt-2 font-medium text-[hsl(var(--accent))]">
-                          Your ₹500 will be fully refunded — no worries!
-                        </p>
-                      </div>
-                    </div>
+            {/* Payment Process Information */}
+            <Card className="bg-white rounded-2xl shadow-xl border border-[hsl(var(--border))] p-6 mt-6">
+              <h2 className="text-xl font-bold text-[hsl(var(--foreground))] mb-4">
+                Payment & Order Process
+              </h2>
+              <p className="text-[hsl(var(--muted-foreground))] text-sm mb-4">
+                Pay ₹500 now to confirm your order. This is a token advance, and here's how the process works:
+              </p>
+              
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3 p-3 bg-[hsl(var(--muted))] bg-opacity-20 rounded-lg">
+                  <span className="bg-[hsl(var(--primary))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">1</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-[hsl(var(--foreground))] text-sm">Order Review</p>
+                    <p className="text-xs text-[hsl(var(--muted-foreground))]">Once payment is done, our admin team will review and approve your order.</p>
                   </div>
                 </div>
-              </CardContent>
+                
+                <div className="flex items-start space-x-3 p-3 bg-[hsl(var(--muted))] bg-opacity-20 rounded-lg">
+                  <span className="bg-[hsl(var(--primary))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">2</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-[hsl(var(--foreground))] text-sm">Catch & Update</p>
+                    <p className="text-xs text-[hsl(var(--muted-foreground))]">After the fish is caught, we'll update you with:</p>
+                    <ul className="list-disc list-inside ml-4 mt-1 text-xs text-[hsl(var(--muted-foreground))]">
+                      <li>The weight of the fish</li>
+                      <li>The final price</li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-3 p-3 bg-[hsl(var(--muted))] bg-opacity-20 rounded-lg">
+                  <span className="bg-[hsl(var(--primary))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">3</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-[hsl(var(--foreground))] text-sm">Final Payment</p>
+                    <p className="text-xs text-[hsl(var(--muted-foreground))]">You'll then pay the remaining balance before delivery.</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-3 p-3 bg-[hsl(var(--muted))] bg-opacity-20 rounded-lg">
+                  <span className="bg-[hsl(var(--primary))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">4</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-[hsl(var(--foreground))] text-sm">Refund Policy</p>
+                    <p className="text-xs text-[hsl(var(--muted-foreground))]">If we are unable to catch the fish or deliver your order, your ₹500 will be fully refunded — no worries!</p>
+                  </div>
+                </div>
+              </div>
             </Card>
           </div>
 
           {/* Checkout Form */}
-          <div className="order-1 lg:order-2">
-            <Card className="border-2 border-[hsl(var(--border))] bg-white shadow-md">
-              <CardHeader>
-                <CardTitle className="text-[hsl(var(--primary))] text-xl sm:text-2xl font-bold">Shipping Information</CardTitle>
-                <CardDescription className="text-[hsl(var(--muted-foreground))]">Enter your delivery details</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-                  {/* Required Fields Notice */}
-                  <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                    <p className="text-blue-800 text-sm font-medium">
-                      <span className="text-red-500 font-bold">*</span> All fields are required
-                    </p>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="firstName" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">
-                        First Name <span className="text-red-500">*</span>
-                      </Label>
-                      <Input
-                        id="firstName"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleInputChange}
-                        onBlur={() => validateField('firstName')}
-                        required
-                        className={`border-2 text-sm sm:text-base transition-colors duration-200 ${
-                          errors.firstName ? 'border-red-500 bg-red-50' : 
-                          formData.firstName.trim() ? 'border-green-500 bg-green-50' : 
-                          'border-[hsl(var(--border))]'
-                        } focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
-                      />
-                      {errors.firstName && (
-                        <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.firstName}</p>
-                      )}
-                    </div>
-                    <div>
-                      <Label htmlFor="lastName" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">
-                        Last Name <span className="text-red-500">*</span>
-                      </Label>
-                      <Input
-                        id="lastName"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleInputChange}
-                        onBlur={() => validateField('lastName')}
-                        required
-                        className={`border-2 text-sm sm:text-base transition-colors duration-200 ${
-                          errors.lastName ? 'border-red-500 bg-red-50' : 
-                          formData.lastName.trim() ? 'border-green-500 bg-green-50' : 
-                          'border-[hsl(var(--border))]'
-                        } focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
-                      />
-                      {errors.lastName && (
-                        <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.lastName}</p>
-                      )}
-                    </div>
-                  </div>
-                  
+          <div className="order-2 lg:order-2">
+            <Card className="bg-white rounded-2xl shadow-xl border border-[hsl(var(--border))] p-6">
+              <h2 className="text-2xl font-bold text-[hsl(var(--foreground))] mb-6">Shipping Information</h2>
+              
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="phone" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">
-                      Phone Number <span className="text-red-500">*</span>
-                    </Label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <span className="text-[hsl(var(--muted-foreground))] text-sm sm:text-base">+91</span>
-                      </div>
-                      <Input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        onBlur={() => validateField('phone')}
-                        required
-                        placeholder="Enter 10 digit number"
-                        className={`border-2 pl-12 text-sm sm:text-base transition-colors duration-200 ${
-                          errors.phone ? 'border-red-500 bg-red-50' : 
-                          formData.phone.trim() && /^\d{10}$/.test(formData.phone.trim()) ? 'border-green-500 bg-green-50' : 
-                          'border-[hsl(var(--border))]'
-                        } focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
-                      />
-                    </div>
-                    {errors.phone && (
-                      <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.phone}</p>
-                    )}
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="address" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">
-                      Address <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      id="address"
-                      name="address"
-                      value={formData.address}
+                    <label htmlFor="firstName" className="block text-sm font-medium text-[hsl(var(--foreground))] mb-2">
+                      First Name *
+                    </label>
+                    <input
+                      type="text"
+                      id="firstName"
+                      name="firstName"
+                      value={formData.firstName}
                       onChange={handleInputChange}
-                      onBlur={() => validateField('address')}
                       required
-                      placeholder="Enter complete address"
-                      className={`border-2 text-sm sm:text-base transition-colors duration-200 ${
-                        errors.address ? 'border-red-500 bg-red-50' : 
-                        formData.address.trim() && formData.address.trim().length >= 10 ? 'border-green-500 bg-green-50' : 
-                        'border-[hsl(var(--border))]'
-                      } focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
+                      className="w-full px-4 py-3 border-2 border-[hsl(var(--border))] rounded-xl focus:border-[hsl(var(--primary))] focus:outline-none transition-colors duration-200 bg-white"
+                      placeholder="Enter your first name"
                     />
-                    {errors.address && (
-                      <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.address}</p>
-                    )}
                   </div>
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                      <Label htmlFor="city" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">
-                        City <span className="text-red-500">*</span>
-                      </Label>
-                      <Input
-                        id="city"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleInputChange}
-                        onBlur={() => validateField('city')}
-                        required
-                        className={`border-2 text-sm sm:text-base transition-colors duration-200 ${
-                          errors.city ? 'border-red-500 bg-red-50' : 
-                          formData.city.trim() ? 'border-green-500 bg-green-50' : 
-                          'border-[hsl(var(--border))]'
-                        } focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
-                      />
-                      {errors.city && (
-                        <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.city}</p>
-                      )}
-                    </div>
-                    <div>
-                      <Label htmlFor="state" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">
-                        State <span className="text-red-500">*</span>
-                      </Label>
-                      <Input
-                        id="state"
-                        name="state"
-                        value={formData.state}
-                        onChange={handleInputChange}
-                        onBlur={() => validateField('state')}
-                        required
-                        className={`border-2 text-sm sm:text-base transition-colors duration-200 ${
-                          errors.state ? 'border-red-500 bg-red-50' : 
-                          formData.state.trim() ? 'border-green-500 bg-green-50' : 
-                          'border-[hsl(var(--border))]'
-                        } focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
-                      />
-                      {errors.state && (
-                        <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.state}</p>
-                      )}
-                    </div>
-                    <div>
-                      <Label htmlFor="zip" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">
-                        Pincode <span className="text-red-500">*</span>
-                      </Label>
-                      <Input
-                        id="zip"
-                        name="zip"
-                        value={formData.zip}
-                        onChange={handleInputChange}
-                        onBlur={() => validateField('zip')}
-                        required
-                        placeholder="6 digits"
-                        className={`border-2 text-sm sm:text-base transition-colors duration-200 ${
-                          errors.zip ? 'border-red-500 bg-red-50' : 
-                          formData.zip.trim() && /^\d{6}$/.test(formData.zip.trim()) ? 'border-green-500 bg-green-50' : 
-                          'border-[hsl(var(--border))]'
-                        } focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
-                      />
-                      {errors.zip && (
-                        <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.zip}</p>
-                      )}
-                    </div>
+                  <div>
+                    <label htmlFor="lastName" className="block text-sm font-medium text-[hsl(var(--foreground))] mb-2">
+                      Last Name *
+                    </label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 border-2 border-[hsl(var(--border))] rounded-xl focus:border-[hsl(var(--primary))] focus:outline-none transition-colors duration-200 bg-white"
+                      placeholder="Enter your last name"
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-medium text-[hsl(var(--foreground))] mb-2">
+                    Phone Number *
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 border-2 border-[hsl(var(--border))] rounded-xl focus:border-[hsl(var(--primary))] focus:outline-none transition-colors duration-200 bg-white"
+                    placeholder="Enter your phone number"
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="address" className="block text-sm font-medium text-[hsl(var(--foreground))] mb-2">
+                    Delivery Address *
+                  </label>
+                  <textarea
+                    id="address"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    required
+                    rows={4}
+                    className="w-full px-4 py-3 border-2 border-[hsl(var(--border))] rounded-xl focus:border-[hsl(var(--primary))] focus:outline-none transition-colors duration-200 bg-white resize-none"
+                    placeholder="Enter your complete delivery address"
+                  />
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div>
+                    <label htmlFor="city" className="block text-sm font-medium text-[hsl(var(--foreground))] mb-2">
+                      City *
+                    </label>
+                    <input
+                      type="text"
+                      id="city"
+                      name="city"
+                      value={formData.city}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 border-2 border-[hsl(var(--border))] rounded-xl focus:border-[hsl(var(--primary))] focus:outline-none transition-colors duration-200 bg-white"
+                      placeholder="Enter city"
+                    />
                   </div>
                   
-                  {/* Razorpay Payment Section */}
-                  <div className="border-2 border-[hsl(var(--border))] rounded-lg p-4 bg-gray-50">
-                    <div className="text-center">
-                      <h3 className="text-base sm:text-lg font-semibold text-[hsl(var(--primary))] mb-3">💳 Token Advance Payment</h3>
-                      <p className="text-sm text-orange-600 font-medium mb-4">Pay ₹500 now to confirm your order</p>
-                      <div className="flex flex-col items-center space-y-3">
-                        <div className="text-xs sm:text-sm text-[hsl(var(--muted-foreground))]">
-                          <p className="font-medium">Payment Methods: <span className="text-[hsl(var(--primary))]">Cards, UPI, NetBanking, Wallets</span></p>
-                          <p className="text-xs mt-2">Remaining balance will be collected after fish is caught</p>
-                        </div>
-                      </div>
-                    </div>
+                  <div>
+                    <label htmlFor="state" className="block text-sm font-medium text-[hsl(var(--foreground))] mb-2">
+                      State *
+                    </label>
+                    <input
+                      type="text"
+                      id="state"
+                      name="state"
+                      value={formData.state}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 border-2 border-[hsl(var(--border))] rounded-xl focus:border-[hsl(var(--primary))] focus:outline-none transition-colors duration-200 bg-white"
+                      placeholder="Enter state"
+                    />
                   </div>
                   
-                  <Button
-                    type="submit"
-                    className="w-full bg-[hsl(var(--primary))] hover:bg-[hsl(var(--accent))] text-white rounded-full font-semibold text-base sm:text-lg py-3 shadow-md"
-                    disabled={loading}
-                  >
-                    {loading ? "Processing..." : "💳 Pay ₹500 Token Advance"}
-                  </Button>
-                </form>
-              </CardContent>
+                  <div>
+                    <label htmlFor="zip" className="block text-sm font-medium text-[hsl(var(--foreground))] mb-2">
+                      Pincode *
+                    </label>
+                    <input
+                      type="text"
+                      id="zip"
+                      name="zip"
+                      value={formData.zip}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 border-2 border-[hsl(var(--border))] rounded-xl focus:border-[hsl(var(--primary))] focus:outline-none transition-colors duration-200 bg-white"
+                      placeholder="6 digits"
+                    />
+                  </div>
+                </div>
+                
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-[hsl(var(--primary))] hover:bg-[hsl(var(--accent))] text-white rounded-xl py-4 text-lg font-bold shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  {loading ? "Processing..." : "Pay ₹500"}
+                </Button>
+              </form>
             </Card>
           </div>
         </div>

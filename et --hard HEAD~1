@@ -1,0 +1,10 @@
+[33m4fe1084[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Enhance checkout form with required fields notice, red asterisks, and real-time validation feedback
+[33m113a3d5[m Add comprehensive debug logging to Google OAuth frontend flow
+[33m9602375[m Restore working Google OAuth: Use working version from commit fc4ad30
+[33mfc4ad30[m Add Google OAuth support to frontend: Add Google OAuth button, update auth service, and integrate with login/signup pages
+[33m32f3d61[m Update footer: Add proper Instagram icon and replace F I Y T with creative fish-themed design
+[33mc860a58[m Update footer and navigation: Add subtitle 'Pulasa Fish Delivery' and clean up Quick Links section
+[33m12d09cf[m Fix OTP verification flow: prevent auto-login until email verification
+[33mcf6d13c[m Add debugging and fix OTP flow - Add console logs to debug registration response - Update register method to return otpRequired field - Fix AuthResponse interface for OTP handling
+[33m6f7bb8f[m Complete email verification system with OTP functionality
+[33mdc0b50f[m Test commit for authentication
