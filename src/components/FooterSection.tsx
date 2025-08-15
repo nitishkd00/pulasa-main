@@ -90,44 +90,44 @@ const FooterSection = () => {
             </h4>
             <ul className="space-y-2">
               <li>
-                <a
-                  href="/help-support"
+                <Link
+                  to="/help-support"
                   className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors hover:underline text-base"
                 >
                   Help & Support
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/delivery-info"
+                <Link
+                  to="/delivery-info"
                   className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors hover:underline text-base"
                 >
                   Delivery Info
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/returns-refunds"
+                <Link
+                  to="/returns-refunds"
                   className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors hover:underline text-base"
                 >
                   Returns & Refunds
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/terms-conditions"
+                <Link
+                  to="/terms-conditions"
                   className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors hover:underline text-base"
                 >
                   Terms & Conditions
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/privacy-policy"
+                <Link
+                  to="/privacy-policy"
                   className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors hover:underline text-base"
                 >
                   Privacy Policy
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

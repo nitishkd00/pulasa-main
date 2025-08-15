@@ -22,6 +22,11 @@ import Blogs from "./pages/blogs";
 import BlogDetail from "./pages/blogs/BlogDetail";
 import AuctionList from "./pages/AuctionList";
 import AuctionDetail from "./pages/AuctionDetail";
+import HelpSupport from "./pages/HelpSupport";
+import DeliveryInfo from "./pages/DeliveryInfo";
+import ReturnsRefunds from "./pages/ReturnsRefunds";
+import TermsConditions from "./pages/TermsConditions";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +55,12 @@ const App = () => (
                 {/* Auction Routes */}
                 <Route path="/auctions" element={<AuctionList />} />
                 <Route path="/auctions/:id" element={<AuctionDetail />} />
+                {/* Customer Care Routes */}
+                <Route path="/help-support" element={<HelpSupport />} />
+                <Route path="/delivery-info" element={<DeliveryInfo />} />
+                <Route path="/returns-refunds" element={<ReturnsRefunds />} />
+                <Route path="/terms-conditions" element={<TermsConditions />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
