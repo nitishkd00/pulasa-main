@@ -63,9 +63,9 @@ const Blogs = () => {
     },
   ];
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen bg-[hsl(var(--secondary))]">
       <NavigationHeader />
-      <main className="flex-grow w-full px-4 py-12 pt-24 bg-white">
+      <main className="flex-grow w-full px-4 py-12 pt-28 bg-[hsl(var(--secondary))]">
         <div className="max-w-5xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold text-center text-[hsl(var(--primary))] mb-2">
             Our Blog

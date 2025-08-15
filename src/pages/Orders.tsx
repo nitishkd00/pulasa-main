@@ -222,7 +222,7 @@ const Orders = () => {
             {orders.map((order) => {
               const products = parseProducts(order.products);
               return (
-                <Card key={order.id} className="border-2 border-[hsl(var(--border))] bg-white shadow-md">
+                <Card key={order.id} className="border-2 border-[hsl(var(--border))] bg-[hsl(var(--card))] shadow-lg rounded-2xl">
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <div>

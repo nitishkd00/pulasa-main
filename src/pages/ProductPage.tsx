@@ -9,7 +9,7 @@ const ProductPage = () => {
   useScrollToTop();
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-[hsl(var(--secondary))]">
       <NavigationHeader />
       <main className="flex-grow pt-16">
         <div className="w-full max-w-4xl mx-auto mt-6 mb-4 rounded-lg overflow-hidden">

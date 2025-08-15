@@ -88,7 +88,7 @@ const Profile = () => {
       <NavigationHeader />
       <div className="pt-16">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="bg-white rounded-lg shadow-lg border border-[hsl(var(--border))] p-8">
+          <div className="bg-[hsl(var(--card))] rounded-2xl shadow-xl border border-[hsl(var(--border))] p-8">
             <h1 className="text-3xl font-bold text-[hsl(var(--primary))] mb-8 text-center">Profile Information</h1>
             
             <div className="space-y-6">
