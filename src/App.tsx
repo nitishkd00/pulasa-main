@@ -27,6 +27,7 @@ import DeliveryInfo from "./pages/DeliveryInfo";
 import ReturnsRefunds from "./pages/ReturnsRefunds";
 import TermsConditions from "./pages/TermsConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import CartNotification from "./components/CartNotification";
 
 const queryClient = new QueryClient();
 
@@ -64,6 +65,7 @@ const App = () => (
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              <CartNotification />
             </BrowserRouter>
           </TooltipProvider>
         </AuctionProvider>
