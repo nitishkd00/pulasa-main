@@ -125,6 +125,66 @@ const CheckoutPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  // Individual field validation for real-time feedback
+  const validateField = (fieldName: string) => {
+    const value = formData[fieldName as keyof typeof formData];
+    let error = "";
+
+    switch (fieldName) {
+      case 'firstName':
+        if (!value.trim()) {
+          error = "First name is required";
+        } else if (value.trim().length < 2) {
+          error = "First name must be at least 2 characters";
+        }
+        break;
+      case 'lastName':
+        if (!value.trim()) {
+          error = "Last name is required";
+        } else if (value.trim().length < 2) {
+          error = "Last name must be at least 2 characters";
+        }
+        break;
+      case 'phone':
+        if (!value.trim()) {
+          error = "Phone number is required";
+        } else if (!/^\d{10}$/.test(value.trim())) {
+          error = "Phone number must be exactly 10 digits";
+        }
+        break;
+      case 'address':
+        if (!value.trim()) {
+          error = "Address is required";
+        } else if (value.trim().length < 10) {
+          error = "Address must be at least 10 characters";
+        }
+        break;
+      case 'city':
+        if (!value.trim()) {
+          error = "City is required";
+        } else if (value.trim().length < 2) {
+          error = "City must be at least 2 characters";
+        }
+        break;
+      case 'state':
+        if (!value.trim()) {
+          error = "State is required";
+        } else if (value.trim().length < 2) {
+          error = "State must be at least 2 characters";
+        }
+        break;
+      case 'zip':
+        if (!value.trim()) {
+          error = "Pincode is required";
+        } else if (!/^\d{6}$/.test(value.trim())) {
+          error = "Pincode must be exactly 6 digits";
+        }
+        break;
+    }
+
+    setErrors(prev => ({ ...prev, [fieldName]: error }));
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     
@@ -399,30 +459,51 @@ const CheckoutPage = () => {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                  {/* Required Fields Notice */}
+                  <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-blue-800 text-sm font-medium">
+                      <span className="text-red-500 font-bold">*</span> All fields are required
+                    </p>
+                  </div>
+                  
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="firstName" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">First Name *</Label>
+                      <Label htmlFor="firstName" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">
+                        First Name <span className="text-red-500">*</span>
+                      </Label>
                       <Input
                         id="firstName"
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleInputChange}
+                        onBlur={() => validateField('firstName')}
                         required
-                        className={`border-2 text-sm sm:text-base ${errors.firstName ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
+                        className={`border-2 text-sm sm:text-base transition-colors duration-200 ${
+                          errors.firstName ? 'border-red-500 bg-red-50' : 
+                          formData.firstName.trim() ? 'border-green-500 bg-green-50' : 
+                          'border-[hsl(var(--border))]'
+                        } focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
                       />
                       {errors.firstName && (
                         <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.firstName}</p>
                       )}
                     </div>
                     <div>
-                      <Label htmlFor="lastName" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">Last Name *</Label>
+                      <Label htmlFor="lastName" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">
+                        Last Name <span className="text-red-500">*</span>
+                      </Label>
                       <Input
                         id="lastName"
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleInputChange}
+                        onBlur={() => validateField('lastName')}
                         required
-                        className={`border-2 text-sm sm:text-base ${errors.lastName ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
+                        className={`border-2 text-sm sm:text-base transition-colors duration-200 ${
+                          errors.lastName ? 'border-red-500 bg-red-50' : 
+                          formData.lastName.trim() ? 'border-green-500 bg-green-50' : 
+                          'border-[hsl(var(--border))]'
+                        } focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
                       />
                       {errors.lastName && (
                         <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.lastName}</p>
@@ -431,7 +512,9 @@ const CheckoutPage = () => {
                   </div>
                   
                   <div>
-                    <Label htmlFor="phone" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">Phone Number *</Label>
+                    <Label htmlFor="phone" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">
+                      Phone Number <span className="text-red-500">*</span>
+                    </Label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <span className="text-[hsl(var(--muted-foreground))] text-sm sm:text-base">+91</span>
@@ -442,9 +525,14 @@ const CheckoutPage = () => {
                         type="tel"
                         value={formData.phone}
                         onChange={handleInputChange}
+                        onBlur={() => validateField('phone')}
                         required
                         placeholder="Enter 10 digit number"
-                        className={`border-2 pl-12 text-sm sm:text-base ${errors.phone ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
+                        className={`border-2 pl-12 text-sm sm:text-base transition-colors duration-200 ${
+                          errors.phone ? 'border-red-500 bg-red-50' : 
+                          formData.phone.trim() && /^\d{10}$/.test(formData.phone.trim()) ? 'border-green-500 bg-green-50' : 
+                          'border-[hsl(var(--border))]'
+                        } focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
                       />
                     </div>
                     {errors.phone && (
@@ -453,15 +541,22 @@ const CheckoutPage = () => {
                   </div>
                   
                   <div>
-                    <Label htmlFor="address" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">Address *</Label>
+                    <Label htmlFor="address" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">
+                      Address <span className="text-red-500">*</span>
+                    </Label>
                     <Input
                       id="address"
                       name="address"
                       value={formData.address}
                       onChange={handleInputChange}
+                      onBlur={() => validateField('address')}
                       required
                       placeholder="Enter complete address"
-                      className={`border-2 text-sm sm:text-base ${errors.address ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
+                      className={`border-2 text-sm sm:text-base transition-colors duration-200 ${
+                        errors.address ? 'border-red-500 bg-red-50' : 
+                        formData.address.trim() && formData.address.trim().length >= 10 ? 'border-green-500 bg-green-50' : 
+                        'border-[hsl(var(--border))]'
+                      } focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
                     />
                     {errors.address && (
                       <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.address}</p>
@@ -470,43 +565,64 @@ const CheckoutPage = () => {
                   
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
-                      <Label htmlFor="city" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">City *</Label>
+                      <Label htmlFor="city" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">
+                        City <span className="text-red-500">*</span>
+                      </Label>
                       <Input
                         id="city"
                         name="city"
                         value={formData.city}
                         onChange={handleInputChange}
+                        onBlur={() => validateField('city')}
                         required
-                        className={`border-2 text-sm sm:text-base ${errors.city ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
+                        className={`border-2 text-sm sm:text-base transition-colors duration-200 ${
+                          errors.city ? 'border-red-500 bg-red-50' : 
+                          formData.city.trim() ? 'border-green-500 bg-green-50' : 
+                          'border-[hsl(var(--border))]'
+                        } focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
                       />
                       {errors.city && (
                         <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.city}</p>
                       )}
                     </div>
                     <div>
-                      <Label htmlFor="state" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">State *</Label>
+                      <Label htmlFor="state" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">
+                        State <span className="text-red-500">*</span>
+                      </Label>
                       <Input
                         id="state"
                         name="state"
                         value={formData.state}
                         onChange={handleInputChange}
+                        onBlur={() => validateField('state')}
                         required
-                        className={`border-2 text-sm sm:text-base ${errors.state ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
+                        className={`border-2 text-sm sm:text-base transition-colors duration-200 ${
+                          errors.state ? 'border-red-500 bg-red-50' : 
+                          formData.state.trim() ? 'border-green-500 bg-green-50' : 
+                          'border-[hsl(var(--border))]'
+                        } focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
                       />
                       {errors.state && (
                         <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.state}</p>
                       )}
                     </div>
                     <div>
-                      <Label htmlFor="zip" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">Pincode *</Label>
+                      <Label htmlFor="zip" className="text-[hsl(var(--primary))] font-medium text-sm sm:text-base">
+                        Pincode <span className="text-red-500">*</span>
+                      </Label>
                       <Input
                         id="zip"
                         name="zip"
                         value={formData.zip}
                         onChange={handleInputChange}
+                        onBlur={() => validateField('zip')}
                         required
                         placeholder="6 digits"
-                        className={`border-2 text-sm sm:text-base ${errors.zip ? 'border-red-500' : 'border-[hsl(var(--border))]'} focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
+                        className={`border-2 text-sm sm:text-base transition-colors duration-200 ${
+                          errors.zip ? 'border-red-500 bg-red-50' : 
+                          formData.zip.trim() && /^\d{6}$/.test(formData.zip.trim()) ? 'border-green-500 bg-green-50' : 
+                          'border-[hsl(var(--border))]'
+                        } focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]`}
                       />
                       {errors.zip && (
                         <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.zip}</p>
