@@ -25,44 +25,61 @@ const GoogleOAuthButton: React.FC<GoogleOAuthButtonProps> = ({
   const [loading, setLoading] = React.useState(false);
 
   const handleGoogleLogin = async () => {
+    console.log('🔍 [DEBUG] Google OAuth button clicked');
     setLoading(true);
     
     try {
       // Check if Google OAuth is available
       if (!window.google) {
+        console.error('❌ [DEBUG] window.google is not available');
         toast.error('Google OAuth is not available. Please try again.');
         setLoading(false);
         return;
       }
+      
+      console.log('✅ [DEBUG] window.google is available');
 
       // Initialize Google OAuth
       const google = window.google;
+      
+      console.log('🔍 [DEBUG] About to initialize Google OAuth with client ID:', import.meta.env.VITE_GOOGLE_CLIENT_ID ? 'SET' : 'NOT SET');
       
       // Use Google Identity Services for OAuth2
       google.accounts.oauth2.initTokenClient({
         client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID || '',
         scope: 'email profile',
         callback: async (response: any) => {
+          console.log('🔍 [DEBUG] Google OAuth callback triggered with response:', response);
+          
           if (response.error) {
+            console.error('❌ [DEBUG] Google OAuth error in response:', response.error);
             toast.error('Google authentication failed');
             onError?.('Google authentication failed');
             setLoading(false);
             return;
           }
+          
+          console.log('✅ [DEBUG] Google OAuth successful, access_token received:', response.access_token ? 'YES' : 'NO');
 
           try {
+            console.log('🔍 [DEBUG] About to call unifiedAuthService.googleLogin with token length:', response.access_token?.length || 0);
+            
             // Send the access token to our backend
             const result = await unifiedAuthService.googleLogin(response.access_token);
             
+            console.log('🔍 [DEBUG] Backend response:', result);
+            
             if (result.success && result.user) {
+              console.log('✅ [DEBUG] Google OAuth successful, user:', result.user.email);
               toast.success(`Successfully ${variant === 'login' ? 'signed in' : 'signed up'} with Google!`);
               onSuccess?.(result.user);
             } else {
+              console.error('❌ [DEBUG] Backend returned error:', result.error);
               toast.error(result.error || `Google ${variant} failed`);
               onError?.(result.error || `Google ${variant} failed`);
             }
           } catch (error) {
-            console.error('Google OAuth error:', error);
+            console.error('❌ [DEBUG] Error calling backend:', error);
             toast.error('An error occurred during Google authentication');
             onError?.('An error occurred during Google authentication');
           } finally {
@@ -70,8 +87,11 @@ const GoogleOAuthButton: React.FC<GoogleOAuthButtonProps> = ({
           }
         },
       }).requestAccessToken();
+      
+      console.log('✅ [DEBUG] Google OAuth initialization completed, popup should open');
+      
     } catch (error) {
-      console.error('Google OAuth initialization error:', error);
+      console.error('❌ [DEBUG] Google OAuth initialization error:', error);
       toast.error('Failed to initialize Google OAuth');
       onError?.('Failed to initialize Google OAuth');
       setLoading(false);
