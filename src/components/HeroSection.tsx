@@ -66,7 +66,7 @@ const HeroSection = () => {
                 <Button
                   onClick={scrollToStory}
                   variant="outline"
-                  className="border-2 border-[hsl(var(--primary))] bg-white text-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))] hover:text-white px-8 py-4 text-lg rounded-full transition-all duration-300 shadow-md font-semibold"
+                  className="border-2 border-[hsl(var(--primary))] bg-[hsl(var(--card))] text-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))] hover:text-white px-8 py-4 text-lg rounded-full transition-all duration-300 shadow-md font-semibold"
                 >
                   See Pulasa Journey
                 </Button>

@@ -191,7 +191,7 @@ const StorySection = () => {
                 Order Your Pulasa
               </button>
               <button
-                className="border-2 border-white text-white hover:bg-white hover:text-[hsl(var(--primary))] px-6 py-3 rounded-full font-semibold transition-all duration-300"
+                className="border-2 border-white text-white hover:bg-[hsl(var(--card))] hover:text-[hsl(var(--primary))] px-6 py-3 rounded-full font-semibold transition-all duration-300"
                 onClick={handleLearnMore}
               >
                 Learn More

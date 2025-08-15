@@ -1,11 +1,20 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
+import { Instagram, Mail, Phone, Trophy, CheckCircle, Fish, Waves, Crown, Smartphone } from "lucide-react";
 
 const FooterSection = () => {
   return (
-    <footer className="bg-white border-t-4 border-[hsl(var(--primary))] text-[hsl(var(--primary))] pt-12 pb-8">
-      <div className="container mx-auto px-4">
+    <footer className="relative bg-gradient-to-br from-[hsl(var(--primary))]/5 via-[hsl(var(--accent))]/10 to-[hsl(var(--primary))]/15 border-t-4 border-[hsl(var(--primary))] text-[hsl(var(--primary))] pt-12 pb-8 overflow-hidden">
+      {/* Subtle Pattern Overlay */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23B1420A' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+        }}></div>
+      </div>
+      
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand Section */}
           <div className="space-y-6">
@@ -80,22 +89,46 @@ const FooterSection = () => {
               Customer Care
             </h4>
             <ul className="space-y-2">
-              {[
-                "Help & Support",
-                "Delivery Info",
-                "Returns & Refunds",
-                "Terms & Conditions",
-                "Privacy Policy",
-              ].map((link) => (
-                <li key={link}>
-                  <a
-                    href="#"
-                    className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors hover:underline text-base"
-                  >
-                    {link}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <a
+                  href="/help-support"
+                  className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors hover:underline text-base"
+                >
+                  Help & Support
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/delivery-info"
+                  className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors hover:underline text-base"
+                >
+                  Delivery Info
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/returns-refunds"
+                  className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors hover:underline text-base"
+                >
+                  Returns & Refunds
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/terms-conditions"
+                  className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors hover:underline text-base"
+                >
+                  Terms & Conditions
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/privacy-policy"
+                  className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors hover:underline text-base"
+                >
+                  Privacy Policy
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -112,38 +145,22 @@ const FooterSection = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <span className="w-5 h-5 flex items-center justify-center">
-                    {/* WhatsApp SVG Icon */}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-5 h-5 group-hover:text-[hsl(var(--accent))] transition-colors"
-                    >
-                      <circle
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        fill="currentColor"
-                        className="text-[#25D366] group-hover:text-[hsl(var(--accent))] transition-colors"
-                      />
-                      <path
-                        fill="#fff"
-                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.472-.148-.67.15-.198.297-.767.967-.94 1.165-.173.198-.347.223-.644.075-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.372-.025-.521-.075-.149-.669-1.612-.916-2.21-.242-.58-.487-.501-.669-.51-.173-.007-.372-.009-.571-.009-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.099 3.205 5.077 4.369.71.306 1.263.489 1.695.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.288.173-1.413-.074-.124-.272-.198-.57-.347z"
-                      />
-                    </svg>
-                  </span>
+                  <svg
+                    className="w-5 h-5 text-[#25D366] group-hover:text-[hsl(var(--accent))] transition-colors"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-3.825 3.113-6.937 6.937-6.937 1.856.001 3.598.723 4.907 2.034 1.31 1.311 2.031 3.054 2.03 4.908-.001 3.825-3.113 6.938-6.937 6.938z"/>
+                  </svg>
                   <span>WhatsApp Support</span>
                 </a>
                 <div className="flex items-center space-x-2 text-[hsl(var(--primary))]">
-                  <span>📞</span>
+                  <Phone className="w-5 h-5" />
                   <span>+91 90351 51944</span>
                 </div>
                 <div className="flex items-center space-x-2 text-[hsl(var(--primary))]">
-                  <span>✉️</span>
-                  <span>hello@pulasa.com</span>
+                  <Mail className="w-5 h-5" />
+                  <span>support@pulasa.com</span>
                 </div>
                 <a
                   href="https://www.instagram.com/pulasa_fish/"
@@ -151,33 +168,23 @@ const FooterSection = () => {
                   rel="noopener noreferrer"
                   className="flex items-center space-x-2 text-[hsl(var(--primary))] hover:text-[hsl(var(--accent))] transition-colors group"
                 >
-                  <span className="w-5 h-5 flex items-center justify-center">
-                    {/* Instagram SVG Icon */}
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="w-5 h-5 group-hover:text-[hsl(var(--accent))] transition-colors"
-                    >
-                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                    </svg>
-                  </span>
+                  <Instagram className="w-5 h-5 text-[#E4405F] group-hover:text-[hsl(var(--accent))] transition-colors" />
                   <span>@pulasa_fish</span>
                 </a>
               </div>
             </div>
 
             {/* App Download Teaser */}
-            <Card className="bg-white border border-[hsl(var(--primary))] shadow p-5 rounded-xl">
-              <h5 className="font-semibold mb-2 text-[hsl(var(--primary))]">
-                📱 App Coming Soon
-              </h5>
-              <p className="text-sm text-[hsl(var(--muted-foreground))] mb-3">
-                Get notified when our mobile app launches for even faster
-                ordering!
+            <Card className="bg-[hsl(var(--card))/0.8] backdrop-blur-sm border border-[hsl(var(--primary))] shadow-lg p-5 rounded-xl hover:shadow-xl transition-shadow">
+              <div className="flex items-center space-x-3 mb-2">
+                <Smartphone className="w-5 h-5 text-[hsl(var(--primary))]" />
+                <h5 className="font-semibold text-[hsl(var(--primary))]">
+                  App Coming Soon
+                </h5>
+              </div>
+              <p className="text-sm text-[hsl(var(--muted-foreground))]">
+                Get ready for our mobile app launch! We're working hard to bring you an even better ordering experience.
               </p>
-              <button className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--accent))] text-white px-5 py-2 rounded-full text-sm font-semibold transition-colors shadow-md">
-                Notify Me
-              </button>
             </Card>
           </div>
         </div>
@@ -188,17 +195,17 @@ const FooterSection = () => {
             {/* Awards & Certifications */}
             <div className="flex items-center space-x-8">
               <div className="flex items-center space-x-2 text-base">
-                <span className="w-9 h-9 bg-[hsl(var(--secondary))] rounded-full flex items-center justify-center text-xl border border-[hsl(var(--primary))/20]">
-                  🏆
-                </span>
+                <div className="w-9 h-9 bg-[hsl(var(--card))/0.8] backdrop-blur-sm rounded-full flex items-center justify-center border border-[hsl(var(--primary))/20] shadow-md">
+                  <Trophy className="w-5 h-5 text-[hsl(var(--primary))]" />
+                </div>
                 <span className="text-[hsl(var(--primary))]">
                   Best Seafood 2025
                 </span>
               </div>
               <div className="flex items-center space-x-2 text-base">
-                <span className="w-9 h-9 bg-[hsl(var(--secondary))] rounded-full flex items-center justify-center text-xl border border-[hsl(var(--primary))/20]">
-                  ✅
-                </span>
+                <div className="w-9 h-9 bg-[hsl(var(--card))/0.8] backdrop-blur-sm rounded-full flex items-center justify-center border border-[hsl(var(--primary))/20] shadow-md">
+                  <CheckCircle className="w-5 h-5 text-[hsl(var(--primary))]" />
+                </div>
                 <span className="text-[hsl(var(--primary))]">
                   Certified Fresh
                 </span>
@@ -208,28 +215,37 @@ const FooterSection = () => {
             {/* Copyright */}
             <div className="text-center text-[hsl(var(--muted-foreground))] text-base">
               <p>&copy; 2025 Pulasa.com. All rights reserved.</p>
-              <p className="mt-1">
-                Made with <span className="text-red-400">❤️</span> for Telugu
-                fish lovers
+              <p className="mt-1 flex items-center justify-center space-x-1">
+                Made with 
+                <svg className="w-4 h-4 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                for Telugu fish lovers
               </p>
             </div>
 
             {/* Creative Fish-themed Section */}
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-3">
-                <span className="text-2xl">🐟</span>
+                <div className="w-8 h-8 bg-[hsl(var(--card))/0.8] backdrop-blur-sm rounded-full flex items-center justify-center border border-[hsl(var(--primary))/20] shadow-md">
+                  <Fish className="w-4 h-4 text-[hsl(var(--primary))]" />
+                </div>
                 <span className="text-sm font-medium text-[hsl(var(--primary))]">
                   Fresh from Godavari
                 </span>
               </div>
               <div className="flex items-center space-x-3">
-                <span className="text-2xl">🌊</span>
+                <div className="w-8 h-8 bg-[hsl(var(--card))/0.8] backdrop-blur-sm rounded-full flex items-center justify-center border border-[hsl(var(--primary))/20] shadow-md">
+                  <Waves className="w-4 h-4 text-[hsl(var(--primary))]" />
+                </div>
                 <span className="text-sm font-medium text-[hsl(var(--primary))]">
                   Royal Taste
                 </span>
               </div>
               <div className="flex items-center space-x-3">
-                <span className="text-2xl">👑</span>
+                <div className="w-8 h-8 bg-[hsl(var(--card))/0.8] backdrop-blur-sm rounded-full flex items-center justify-center border border-[hsl(var(--primary))/20] shadow-md">
+                  <Crown className="w-4 h-4 text-[hsl(var(--primary))]" />
+                </div>
                 <span className="text-sm font-medium text-[hsl(var(--primary))]">
                   Premium Quality
                 </span>

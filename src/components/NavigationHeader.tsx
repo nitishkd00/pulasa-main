@@ -27,7 +27,7 @@ const CartIcon = () => (
 
 const NavigationHeader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { cartItems } = useCart();
+  const { cartItems, clearCartOnLogout } = useCart();
   const [user, setUser] = useState(null);
   const [role, setRole] = useState(null);
   const [notifications, setNotifications] = useState([]);
@@ -81,6 +81,10 @@ const NavigationHeader = () => {
   const handleLogout = async () => {
     try {
       await unifiedAuthService.logout();
+      // CRITICAL SECURITY FIX: Clear cart context on logout
+      if (clearCartOnLogout) {
+        clearCartOnLogout();
+      }
       setUser(null);
       setRole(null);
       navigate("/");
@@ -283,7 +287,7 @@ const NavigationHeader = () => {
               role === "admin" ? (
                 <>
                   <Link to="/admin-dashboard">
-                    <Button className="bg-white border border-[hsl(var(--accent))] text-[hsl(var(--accent))] px-6 py-2 rounded-full hover:bg-[hsl(var(--accent))] hover:text-white transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl mr-2">
+                    <Button className="bg-[hsl(var(--card))] border border-[hsl(var(--accent))] text-[hsl(var(--accent))] px-6 py-2 rounded-full hover:bg-[hsl(var(--accent))] hover:text-white transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl mr-2">
                       Admin Dashboard
                     </Button>
                   </Link>
@@ -307,7 +311,7 @@ const NavigationHeader = () => {
                     </Button>
                   </Link>
                   <Link to="/orders">
-                    <Button className="bg-white border border-[hsl(var(--accent))] text-[hsl(var(--accent))] px-6 py-2 rounded-full hover:bg-[hsl(var(--accent))] hover:text-white transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl mr-2">
+                    <Button className="bg-[hsl(var(--card))] border border-[hsl(var(--accent))] text-[hsl(var(--accent))] px-6 py-2 rounded-full hover:bg-[hsl(var(--accent))] hover:text-white transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl mr-2">
                       My Orders
                     </Button>
                   </Link>
@@ -322,9 +326,9 @@ const NavigationHeader = () => {
             ) : (
               <>
                 <Link to="/login">
-                  <Button className="bg-white border border-[hsl(var(--accent))] text-[hsl(var(--accent))] px-6 py-2 rounded-full hover:bg-[hsl(var(--accent))] hover:text-white transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl mr-2">
-                    Login
-                  </Button>
+                                      <Button className="bg-[hsl(var(--card))] border border-[hsl(var(--accent))] text-[hsl(var(--accent))] px-6 py-2 rounded-full hover:bg-[hsl(var(--accent))] hover:text-white transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl mr-2">
+                      Login
+                    </Button>
                 </Link>
                 <Link to="/signup">
                   <Button className="bg-[hsl(var(--accent))] border border-[hsl(var(--accent))] text-white px-6 py-2 rounded-full hover:bg-[hsl(var(--primary))] hover:text-white transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl mr-2">
@@ -355,7 +359,7 @@ const NavigationHeader = () => {
                 
                 {/* Notifications Dropdown */}
                 {showNotifications && (
-                  <div className="notification-dropdown absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border z-50 max-h-96 overflow-y-auto">
+                  <div className="notification-dropdown absolute right-0 mt-2 w-80 bg-[hsl(var(--card))] rounded-lg shadow-lg border z-50 max-h-96 overflow-y-auto">
                     <div className="p-4">
                       <h3 className="text-lg font-semibold mb-3">Notifications</h3>
                       {notifications.length === 0 ? (
@@ -430,7 +434,7 @@ const NavigationHeader = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden mt-4 py-4 bg-white/90 backdrop-blur-md rounded-lg">
+                          <div className="md:hidden mt-4 py-4 bg-[hsl(var(--card))/0.9] backdrop-blur-md rounded-lg">
             <div className="flex flex-col space-y-4 px-4">
               <Link
                 to="/"
@@ -463,9 +467,9 @@ const NavigationHeader = () => {
                 role === "admin" ? (
                   <>
                     <Link to="/admin-dashboard">
-                      <Button className="bg-white border border-[hsl(var(--accent))] text-[hsl(var(--accent))] w-full rounded-full hover:bg-[hsl(var(--accent))] hover:text-white">
-                        Admin Dashboard
-                      </Button>
+                                        <Button className="bg-[hsl(var(--card))] border border-[hsl(var(--accent))] text-[hsl(var(--accent))] w-full rounded-full hover:bg-[hsl(var(--accent))] hover:text-white">
+                    Admin Dashboard
+                  </Button>
                     </Link>
                     <Link to="/profile">
                       <Button className="bg-[hsl(var(--accent))] border border-[hsl(var(--accent))] text-white w-full rounded-full hover:bg-[hsl(var(--primary))] hover:text-white">
@@ -487,9 +491,9 @@ const NavigationHeader = () => {
                       </Button>
                     </Link>
                     <Link to="/orders">
-                      <Button className="bg-white border border-[hsl(var(--accent))] text-[hsl(var(--accent))] w-full rounded-full hover:bg-[hsl(var(--accent))] hover:text-white">
-                        My Orders
-                      </Button>
+                                        <Button className="bg-[hsl(var(--card))] border border-[hsl(var(--accent))] text-[hsl(var(--accent))] w-full rounded-full hover:bg-[hsl(var(--accent))] hover:text-white">
+                    My Orders
+                  </Button>
                     </Link>
                     <Button
                       onClick={handleLogout}
@@ -502,9 +506,9 @@ const NavigationHeader = () => {
               ) : (
                 <>
                   <Link to="/login">
-                    <Button className="bg-white border border-[hsl(var(--accent))] text-[hsl(var(--accent))] w-full rounded-full hover:bg-[hsl(var(--accent))] hover:text-white">
-                      Login
-                    </Button>
+                                      <Button className="bg-[hsl(var(--card))] border border-[hsl(var(--accent))] text-[hsl(var(--accent))] w-full rounded-full hover:bg-[hsl(var(--accent))] hover:text-white">
+                    Login
+                  </Button>
                   </Link>
                   <Link to="/signup">
                     <Button className="bg-[hsl(var(--accent))] border border-[hsl(var(--accent))] text-white w-full rounded-full hover:bg-[hsl(var(--primary))] hover:text-white">

@@ -78,16 +78,16 @@ const ProductShowcase = () => {
       weight: "1kg",
       features: [product.description || ""]
     }, 1);
-    toast.success(`${product.name} added to cart`);
+    // Removed toast notification - now using cart notification box
   };
 
   if (loading) {
     return (
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-[hsl(var(--secondary))]">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto"></div>
-            <p className="mt-4 text-lg">Loading products...</p>
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[hsl(var(--primary))] mx-auto"></div>
+            <p className="mt-4 text-lg text-[hsl(var(--foreground))]">Loading products...</p>
           </div>
         </div>
       </section>
@@ -95,13 +95,13 @@ const ProductShowcase = () => {
   }
 
   return (
-    <section id="products" className="py-16 bg-white">
+    <section id="products" className="py-16 bg-[hsl(var(--secondary))]">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl font-bold text-[hsl(var(--foreground))] mb-4">
             Fresh From Our Waters
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-[hsl(var(--muted-foreground))] max-w-2xl mx-auto">
             Discover our premium selection of fresh fish and seafood, 
             sourced directly from the pristine waters of the Godavari river.
           </p>
@@ -109,38 +109,38 @@ const ProductShowcase = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.map((product) => (
-            <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+            <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 rounded-2xl border-[hsl(var(--border))] shadow-lg">
               <div className="aspect-square overflow-hidden">
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                 />
               </div>
               <CardContent className="p-6">
                 <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-xl font-semibold text-gray-900">
+                  <h3 className="text-xl font-semibold text-[hsl(var(--foreground))]">
                     {product.name}
                   </h3>
                   <Badge variant="secondary" className="ml-2">
                     {product.category}
                   </Badge>
                 </div>
-                <p className="text-gray-600 mb-4 line-clamp-2">
+                <p className="text-[hsl(var(--muted-foreground))] mb-4 line-clamp-2">
                   {product.description}
                 </p>
                 <div className="flex justify-between items-center">
                   <div>
-                    <p className="text-2xl font-bold text-green-600">
+                    <p className="text-2xl font-bold text-[hsl(var(--primary))]">
                       ₹{product.price.toFixed(2)} per kg
                     </p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-[hsl(var(--muted-foreground))]">
                       Stock: {product.stock} available
                     </p>
                   </div>
                   <Button
                     onClick={() => handleAddToCart(product)}
-                    className="bg-green-600 hover:bg-green-700"
+                    className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))/0.9] text-white rounded-xl"
                     disabled={product.stock === 0}
                   >
                     {product.stock === 0 ? "Out of Stock" : "Add to Cart"}
@@ -154,7 +154,7 @@ const ProductShowcase = () => {
         <div className="text-center mt-12">
           <Button
             onClick={() => window.location.href = '/products'}
-            className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-3"
+            className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))/0.9] text-white text-lg px-8 py-3 rounded-xl"
           >
             View All Products
           </Button>
