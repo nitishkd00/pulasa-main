@@ -144,6 +144,66 @@ const CheckoutPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const validateField = (fieldName: string) => {
+    if (fieldName === 'firstName') {
+      if (!formData.firstName.trim()) {
+        setErrors(prev => ({ ...prev, firstName: "First name is required" }));
+      } else if (formData.firstName.trim().length < 2) {
+        setErrors(prev => ({ ...prev, firstName: "First name must be at least 2 characters" }));
+      } else {
+        setErrors(prev => ({ ...prev, firstName: "" }));
+      }
+    } else if (fieldName === 'lastName') {
+      if (!formData.lastName.trim()) {
+        setErrors(prev => ({ ...prev, lastName: "Last name is required" }));
+      } else if (formData.lastName.trim().length < 2) {
+        setErrors(prev => ({ ...prev, lastName: "Last name must be at least 2 characters" }));
+      } else {
+        setErrors(prev => ({ ...prev, lastName: "" }));
+      }
+    } else if (fieldName === 'phone') {
+      if (!formData.phone.trim()) {
+        setErrors(prev => ({ ...prev, phone: "Phone number is required" }));
+      } else if (!/^\d{10}$/.test(formData.phone.trim())) {
+        setErrors(prev => ({ ...prev, phone: "Phone number must be exactly 10 digits" }));
+      } else {
+        setErrors(prev => ({ ...prev, phone: "" }));
+      }
+    } else if (fieldName === 'address') {
+      if (!formData.address.trim()) {
+        setErrors(prev => ({ ...prev, address: "Address is required" }));
+      } else if (formData.address.trim().length < 10) {
+        setErrors(prev => ({ ...prev, address: "Address must be at least 10 characters" }));
+      } else {
+        setErrors(prev => ({ ...prev, address: "" }));
+      }
+    } else if (fieldName === 'city') {
+      if (!formData.city.trim()) {
+        setErrors(prev => ({ ...prev, city: "City is required" }));
+      } else if (formData.city.trim().length < 2) {
+        setErrors(prev => ({ ...prev, city: "City must be at least 2 characters" }));
+      } else {
+        setErrors(prev => ({ ...prev, city: "" }));
+      }
+    } else if (fieldName === 'state') {
+      if (!formData.state.trim()) {
+        setErrors(prev => ({ ...prev, state: "State is required" }));
+      } else if (formData.state.trim().length < 2) {
+        setErrors(prev => ({ ...prev, state: "State must be at least 2 characters" }));
+      } else {
+        setErrors(prev => ({ ...prev, state: "" }));
+      }
+    } else if (fieldName === 'zip') {
+      if (!formData.zip.trim()) {
+        setErrors(prev => ({ ...prev, zip: "Pincode is required" }));
+      } else if (!/^\d{6}$/.test(formData.zip.trim())) {
+        setErrors(prev => ({ ...prev, zip: "Pincode must be exactly 6 digits" }));
+      } else {
+        setErrors(prev => ({ ...prev, zip: "" }));
+      }
+    }
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     
@@ -450,11 +510,18 @@ const CheckoutPage = () => {
             <Card className="bg-white rounded-2xl shadow-xl border border-[hsl(var(--border))] p-6">
               <h2 className="text-2xl font-bold text-[hsl(var(--foreground))] mb-6">Shipping Information</h2>
               
+              {/* Required Fields Notice */}
+              <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-blue-800 text-sm font-medium">
+                  <span className="text-red-500 font-bold">*</span> All fields are required
+                </p>
+              </div>
+              
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="firstName" className="block text-sm font-medium text-[hsl(var(--foreground))] mb-2">
-                      First Name *
+                      First Name <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -462,15 +529,25 @@ const CheckoutPage = () => {
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleInputChange}
+                      onBlur={() => validateField('firstName')}
                       required
-                      className="w-full px-4 py-3 border-2 border-[hsl(var(--border))] rounded-xl focus:border-[hsl(var(--primary))] focus:outline-none transition-colors duration-200 bg-white"
+                      className={`w-full px-4 py-3 border-2 text-sm sm:text-base transition-colors duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary))] focus:ring-opacity-50 ${
+                        errors.firstName 
+                          ? 'border-red-500 bg-red-50' 
+                          : formData.firstName.trim() 
+                            ? 'border-green-500 bg-green-50' 
+                            : 'border-[hsl(var(--border))] bg-white'
+                      }`}
                       placeholder="Enter your first name"
                     />
+                    {errors.firstName && (
+                      <p className="mt-1 text-sm text-red-500">{errors.firstName}</p>
+                    )}
                   </div>
                   
                   <div>
                     <label htmlFor="lastName" className="block text-sm font-medium text-[hsl(var(--foreground))] mb-2">
-                      Last Name *
+                      Last Name <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -478,16 +555,26 @@ const CheckoutPage = () => {
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleInputChange}
+                      onBlur={() => validateField('lastName')}
                       required
-                      className="w-full px-4 py-3 border-2 border-[hsl(var(--border))] rounded-xl focus:border-[hsl(var(--primary))] focus:outline-none transition-colors duration-200 bg-white"
+                      className={`w-full px-4 py-3 border-2 text-sm sm:text-base transition-colors duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary))] focus:ring-opacity-50 ${
+                        errors.lastName 
+                          ? 'border-red-500 bg-red-50' 
+                          : formData.lastName.trim() 
+                            ? 'border-green-500 bg-green-50' 
+                            : 'border-[hsl(var(--border))] bg-white'
+                      }`}
                       placeholder="Enter your last name"
                     />
+                    {errors.lastName && (
+                      <p className="mt-1 text-sm text-red-500">{errors.lastName}</p>
+                    )}
                   </div>
                 </div>
                 
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium text-[hsl(var(--foreground))] mb-2">
-                    Phone Number *
+                    Phone Number <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="tel"
@@ -495,32 +582,52 @@ const CheckoutPage = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
+                    onBlur={() => validateField('phone')}
                     required
-                    className="w-full px-4 py-3 border-2 border-[hsl(var(--border))] rounded-xl focus:border-[hsl(var(--primary))] focus:outline-none transition-colors duration-200 bg-white"
+                    className={`w-full px-4 py-3 border-2 text-sm sm:text-base transition-colors duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary))] focus:ring-opacity-50 ${
+                      errors.phone 
+                        ? 'border-red-500 bg-red-50' 
+                        : formData.phone.trim() && formData.phone.length === 10
+                          ? 'border-green-500 bg-green-50' 
+                          : 'border-[hsl(var(--border))] bg-white'
+                    }`}
                     placeholder="Enter your phone number"
                   />
+                  {errors.phone && (
+                    <p className="mt-1 text-sm text-red-500">{errors.phone}</p>
+                  )}
                 </div>
                 
                 <div>
                   <label htmlFor="address" className="block text-sm font-medium text-[hsl(var(--foreground))] mb-2">
-                    Delivery Address *
+                    Delivery Address <span className="text-red-500">*</span>
                   </label>
                   <textarea
                     id="address"
                     name="address"
                     value={formData.address}
                     onChange={handleInputChange}
+                    onBlur={() => validateField('address')}
                     required
                     rows={4}
-                    className="w-full px-4 py-3 border-2 border-[hsl(var(--border))] rounded-xl focus:border-[hsl(var(--primary))] focus:outline-none transition-colors duration-200 bg-white resize-none"
+                    className={`w-full px-4 py-3 border-2 text-sm sm:text-base transition-colors duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary))] focus:ring-opacity-50 resize-none ${
+                      errors.address 
+                        ? 'border-red-500 bg-red-50' 
+                        : formData.address.trim() && formData.address.length >= 10
+                          ? 'border-green-500 bg-green-50' 
+                          : 'border-[hsl(var(--border))] bg-white'
+                    }`}
                     placeholder="Enter your complete delivery address"
                   />
+                  {errors.address && (
+                    <p className="mt-1 text-sm text-red-500">{errors.address}</p>
+                  )}
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
                     <label htmlFor="city" className="block text-sm font-medium text-[hsl(var(--foreground))] mb-2">
-                      City *
+                      City <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -528,15 +635,25 @@ const CheckoutPage = () => {
                       name="city"
                       value={formData.city}
                       onChange={handleInputChange}
+                      onBlur={() => validateField('city')}
                       required
-                      className="w-full px-4 py-3 border-2 border-[hsl(var(--border))] rounded-xl focus:border-[hsl(var(--primary))] focus:outline-none transition-colors duration-200 bg-white"
+                      className={`w-full px-4 py-3 border-2 text-sm sm:text-base transition-colors duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary))] focus:ring-opacity-50 ${
+                        errors.city 
+                          ? 'border-red-500 bg-red-50' 
+                          : formData.city.trim() && formData.city.length >= 2
+                            ? 'border-green-500 bg-green-50' 
+                            : 'border-[hsl(var(--border))] bg-white'
+                      }`}
                       placeholder="Enter city"
                     />
+                    {errors.city && (
+                      <p className="mt-1 text-sm text-red-500">{errors.city}</p>
+                    )}
                   </div>
                   
                   <div>
                     <label htmlFor="state" className="block text-sm font-medium text-[hsl(var(--foreground))] mb-2">
-                      State *
+                      State <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -544,15 +661,25 @@ const CheckoutPage = () => {
                       name="state"
                       value={formData.state}
                       onChange={handleInputChange}
+                      onBlur={() => validateField('state')}
                       required
-                      className="w-full px-4 py-3 border-2 border-[hsl(var(--border))] rounded-xl focus:border-[hsl(var(--primary))] focus:outline-none transition-colors duration-200 bg-white"
+                      className={`w-full px-4 py-3 border-2 text-sm sm:text-base transition-colors duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary))] focus:ring-opacity-50 ${
+                        errors.state 
+                          ? 'border-red-500 bg-red-50' 
+                          : formData.state.trim() && formData.state.length >= 2
+                            ? 'border-green-500 bg-green-50' 
+                            : 'border-[hsl(var(--border))] bg-white'
+                      }`}
                       placeholder="Enter state"
                     />
+                    {errors.state && (
+                      <p className="mt-1 text-sm text-red-500">{errors.state}</p>
+                    )}
                   </div>
                   
                   <div>
                     <label htmlFor="zip" className="block text-sm font-medium text-[hsl(var(--foreground))] mb-2">
-                      Pincode *
+                      Pincode <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -560,10 +687,20 @@ const CheckoutPage = () => {
                       name="zip"
                       value={formData.zip}
                       onChange={handleInputChange}
+                      onBlur={() => validateField('zip')}
                       required
-                      className="w-full px-4 py-3 border-2 border-[hsl(var(--border))] rounded-xl focus:border-[hsl(var(--primary))] focus:outline-none transition-colors duration-200 bg-white"
-                      placeholder="6 digits"
+                      className={`w-full px-4 py-3 border-2 text-sm sm:text-base transition-colors duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary))] focus:ring-opacity-50 ${
+                        errors.zip 
+                          ? 'border-red-500 bg-red-50' 
+                          : formData.zip.trim() && formData.zip.length === 6
+                            ? 'border-green-500 bg-green-50' 
+                            : 'border-[hsl(var(--border))] bg-white'
+                      }`}
+                      placeholder="Enter pincode"
                     />
+                    {errors.zip && (
+                      <p className="mt-1 text-sm text-red-500">{errors.zip}</p>
+                    )}
                   </div>
                 </div>
                 

@@ -1,9 +1,13 @@
 import React from 'react';
-import { RotateCcw, AlertTriangle, Clock, Mail, Phone, CheckCircle, XCircle } from 'lucide-react';
+import { RefreshCw, AlertTriangle, CheckCircle, XCircle, Package, Truck, CreditCard, Clock } from 'lucide-react';
 import NavigationHeader from '@/components/NavigationHeader';
 import FooterSection from '@/components/FooterSection';
+import { useScrollToTop } from '@/hooks/use-scroll-to-top';
 
 const ReturnsRefunds = () => {
+  // Scroll to top when component mounts
+  useScrollToTop();
+
   return (
     <div className="min-h-screen">
       <NavigationHeader />
@@ -72,7 +76,7 @@ const ReturnsRefunds = () => {
           {/* Refund Process */}
           <div className="bg-[hsl(var(--card))] rounded-xl shadow-2xl p-8 mb-8 border border-[hsl(var(--border))]">
             <h2 className="text-2xl font-semibold text-[hsl(var(--primary))] mb-6 flex items-center">
-              <RotateCcw className="w-6 h-6 mr-2 text-[hsl(var(--primary))]" />
+              <RefreshCw className="w-6 h-6 mr-2 text-[hsl(var(--primary))]" />
               Refund Process
             </h2>
             <div className="space-y-6">
@@ -171,12 +175,12 @@ const ReturnsRefunds = () => {
           {/* Contact for Refunds */}
           <div className="bg-[hsl(var(--card))] rounded-xl shadow-2xl p-8 border border-[hsl(var(--border))]">
             <h2 className="text-2xl font-semibold text-[hsl(var(--primary))] mb-6 flex items-center">
-              <Mail className="w-6 h-6 mr-2 text-[hsl(var(--accent))]" />
+              <CreditCard className="w-6 h-6 mr-2 text-[hsl(var(--accent))]" />
               Need to Request a Refund?
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="text-center p-6 bg-[hsl(var(--accent))]/10 border border-[hsl(var(--accent))]/30 rounded-lg">
-                <Mail className="w-8 h-8 text-[hsl(var(--accent))] mx-auto mb-2" />
+                <CreditCard className="w-8 h-8 text-[hsl(var(--accent))] mx-auto mb-2" />
                 <h3 className="font-semibold text-[hsl(var(--foreground))]">Email Support</h3>
                 <a href="mailto:support@pulasa.com" className="text-[hsl(var(--accent))] hover:text-[hsl(var(--primary))] transition-colors font-medium">
                   support@pulasa.com
@@ -184,7 +188,7 @@ const ReturnsRefunds = () => {
                 <p className="text-sm text-[hsl(var(--muted-foreground))] mt-2">Include photos/videos of the issue</p>
               </div>
               <div className="text-center p-6 bg-[hsl(var(--primary))]/10 border border-[hsl(var(--primary))]/30 rounded-lg">
-                <Phone className="w-8 h-8 text-[hsl(var(--primary))] mx-auto mb-2" />
+                <Truck className="w-8 h-8 text-[hsl(var(--primary))] mx-auto mb-2" />
                 <h3 className="font-semibold text-[hsl(var(--foreground))]">WhatsApp Support</h3>
                 <a href="tel:+919035151944" className="text-[hsl(var(--primary))] hover:text-[hsl(var(--accent))] transition-colors font-medium">
                   +91-9035151944

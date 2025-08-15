@@ -2,8 +2,12 @@ import React from 'react';
 import { FileText, AlertTriangle, DollarSign, XCircle, Shield, Scale, CheckCircle, Mail, Phone } from 'lucide-react';
 import NavigationHeader from '@/components/NavigationHeader';
 import FooterSection from '@/components/FooterSection';
+import { useScrollToTop } from '@/hooks/use-scroll-to-top';
 
 const TermsConditions = () => {
+  // Scroll to top when component mounts
+  useScrollToTop();
+
   return (
     <div className="min-h-screen">
       <NavigationHeader />

@@ -1,9 +1,13 @@
 import React from 'react';
-import { Shield, Database, Eye, Lock, Users, Mail, Phone } from 'lucide-react';
+import { Shield, Eye, Lock, Database, Users, Bell, Globe, FileText } from 'lucide-react';
 import NavigationHeader from '@/components/NavigationHeader';
 import FooterSection from '@/components/FooterSection';
+import { useScrollToTop } from '@/hooks/use-scroll-to-top';
 
 const PrivacyPolicy = () => {
+  // Scroll to top when component mounts
+  useScrollToTop();
+
   return (
     <div className="min-h-screen">
       <NavigationHeader />
